@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>JsFront Documentador</title>
+<meta charset="utf-8">
+</head>
+<body>
+	<script>
+        var namespaces = {},
+            DocFile = {},
+            tags={
+                "class":  {},
+                "alias":  {},
+                "static": {},
+                "param":  {}
+            };
+        
+        String.prototype.trim = function() {
+            return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        };
+        
+        var Tags = {
+            "@namespace": function(nsName, description){
+                console.log(nsName);
+            },
+            "@class": function(clsName, description){
+                console.log(clsName);
+            },
+            "@memberOf": function(className, description){
+                console.log(className);
+            },
+            "@param": function(className, type, name, description){
+                console.log(className);
+            }
+        }
+        
+        DocFile.isTag = function(tag){
+            var a = tag.split(" ")
+            if (a.length>1){
+                console.log(a.length + ", " + a[0]);
+            }
+            
+            return tags[tag] ? true : false;
+        };
+        
+        //retorna um array com as documenta��es encontradas
+        DocFile.split = function(code){
+            var i, row, a, p, c, docs = code.split("/**"), r=[], rows=[], l="";
+            
+            /*i=0;
+            while (i<code.length){
+                c = code.charAt(i);
+                if (c=="\n"){                    
+                    rows.push({
+                        text: l,
+                        startComent: l.indexOf("/**"),
+                        endComent: l.indexOf("*\/")
+                    });                    
+                    l="";
+                }else{
+                    l += c;
+                }
+                i++;
+            }
+            console.log(rows);*/
+            
+            for (i=0; i<docs.length; i++){
+                a = docs[i].split("*/");
+                
+                if (a.length > 1){
+                    r.push({
+                        doc: a[0],
+                        lin: "" //TODO: pegar a linha de c�digo que est� abaixo da docuenta��o
+                    });
+                }
+            }
+            
+            return r;
+        }
+        
+        DocFile.splitTags = function(tags){
+            var p1, p2, p3, a1, a, i, t, s, r = {}, q, p;
+            
+            a = tags.split("\n");
+            
+            for (i=0; i<a.length; i++){
+                s = a[i];
+                p1 = s.indexOf("@"); //come�o da tag. ex: @param
+                if ( p1>-1 ){
+                    t = null;
+                    p = []; //par�metros
+                    
+                    p2 = s.indexOf(" ", p1);
+                    if ( p2>-1 ){ //fim da tag por espa�o
+                        //obt�m os par�metros
+                        p3 = s.substring(p2).trim();
+                        a1 = p3.split(" ");
+                        p = a1;
+                    }else{
+                        p2 = s.length;
+                    }
+                    if ( p2>-1 ){
+                        t = s.substring(p1,p2);
+                        r[t] = p
+                    }
+                }else{
+                    s = s.trim();
+                    if ( t && s!=""){
+                        if (s.charAt(0)=="*"){
+                            s = s.substring(1);
+                        }
+                        if (s!=""){
+                            //adiciona a linha ao �ltimo par�metro da tag atual
+                            if (r[t].length==0){
+                                r[t].push("");
+                            }
+                            
+                            r[t][r[t].length-1] += s;
+                        }
+                    }
+                }
+            }
+            
+            return r;
+        }
+        
+        DocFile.run = function(code){
+            var parts = DocFile.split(code), a, i, j, o, p1, r=[];
+            
+            for (i=0; i<parts.length; i++){
+                o = DocFile.splitTags( parts[i].doc );
+                r.push(o);
+            }
+            
+            for (i=0; i<r.length; i++){
+                o = r[i];
+                
+                if (o["@namespace"]){
+                    Tags["@namespace"].apply(null, o["@namespace"]);
+                }
+                
+                if (o["@class"]){
+                    Tags["@class"].apply(null, o["@class"]);
+                }
+                
+                if (o["@memberOf"]){
+                    Tags["@memberOf"].apply(null, o["@memberOf"]);
+                }
+                
+                for (j in o){
+                    if (Tags[j]){
+                        //Tags[j].apply(null, o[j]);
+                    }
+                }
+            }
+            
+        }
+    </script>
+	<iframe src="documentation.js"
+		onload="DocFile.run(this.contentDocument.body.innerText)"></iframe>
+</body>
+</html>

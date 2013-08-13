@@ -1,0 +1,64 @@
+body {
+	overflow: hidden;
+}
+
+div {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	user-select: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	position: absolute;
+	overflow: hidden;
+	cursor: default;
+	padding: 0;
+	margin: 0;
+	outline: none;
+	border-width: 1px;
+}
+
+input {
+	-moz-user-select: text;
+}
+
+input:focus,textarea:focus {
+	outline: none;
+}
+
+.popup-shadow {
+	-webkit-box-shadow: 0px 0px 15px #808080;
+	-moz-box-shadow: 0px 0px 15px #808080;
+	box-shadow: 0px 0px 15px #808080;
+}
+
+.popup-modal-bg {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #808080;
+	opacity: 0.50;
+	-moz-opacity: 0.50;
+	filter: alpha(opacity = 50);
+}
+
+.shadow-15 {
+	-webkit-box-shadow: 0px 0px 15px #808080;
+	-moz-box-shadow: 0px 0px 15px #808080;
+	box-shadow: 0px 0px 15px #808080;
+}
+
+.shadow-10 {
+	-webkit-box-shadow: 0px 0px 10px #808080;
+	-moz-box-shadow: 0px 0px 10px #808080;
+	box-shadow: 0px 0px 10px #808080;
+}
+
+.shadow-rb {
+	-webkit-box-shadow: 2px 2px 6px #808080;
+	-moz-box-shadow: 2px 2px 6px #808080;
+	box-shadow: 2px 2px 6px #808080;
+}

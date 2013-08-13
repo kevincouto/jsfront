@@ -1,0 +1,1384 @@
+/*
+    jsfront 0.5
+    browser: CHROME 11, FF 4, IE 9, Safari 5, Opera 11. IE8 não tem bordas arredondadas
+*/
+body {
+	font: normal 11px arial, sans-serif, helvetica, verdana, tahoma;
+	font-weight: normal;
+}
+
+input,textarea {
+	font: normal 11px arial, sans-serif, helvetica, verdana, tahoma;
+	font-weight: normal;
+}
+
+/* DisplayObject */
+.ui-bd { /* component border */
+	border-radius: 2px;
+	border: 1px solid #dcdcdc;
+}
+
+.ui-fc { /* component face */
+	background-image: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+}
+
+.ui-bg { /* component background */
+	background: #fff;
+}
+
+.ui-hl { /* component highlight */
+	background-image: -webkit-linear-gradient(top, #efefef, #e8e8e8, #efefef);
+}
+
+.ui-ov { /* component face mouseover */
+	background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
+	border-color: #c6c6c6;
+	box-shadow: 0 1px 1px #dcdde1;
+}
+
+.ui-sd { /* component shadow */
+	box-shadow: 0px 0px 8px #85b2cb, inset 0px 1px 0px #fff;
+}
+
+.ui-af { /* component active focus */
+	border-color: #4384c5;
+}
+
+.ui-pp-sd { /* popup shadow */
+	box-shadow: 0 1px 4px #dcdde1;
+}
+
+.ui-pp-bg { /* popup background */
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.75;
+	background: #ffffff;
+}
+
+.ui-dn { /* component face mousedown */
+	background-image: -webkit-linear-gradient(top, #efefef, #e2e2e2);
+	box-shadow: inset 1px 1px 0 #dcdde1;
+}
+
+.ui-cp { /* component caption */
+	font-weight: bold;
+	color: #111;
+	text-shadow: 1px 1px 0px #fff;
+}
+
+.ui-ac-it { /* active item */
+	background: #3879d9;
+	color: #fff;
+}
+
+/* JHeadBar *******************************************************************/
+.hba {
+	border-radius: 0;
+	border: 1px solid #dcdcdc;
+	border-style: none none solid none;
+	background-image: -webkit-linear-gradient(top, #d8d8d8, #f5f5f5);
+	box-shadow: 0 0px 10px rgba(0, 0, 0, .2);
+	z-index: 1;
+}
+
+.hba-separator {
+	width: 8px;
+	top: 0;
+	bottom: 0;
+	background: url(v.gif) -4px center repeat-y;
+}
+
+/* JDesktopButton *************************************************************/
+.btd {
+	text-align: center;
+	background: red;
+	cursor: pointer;
+}
+
+.btd-over {
+	color: #c0c0c0;
+}
+
+.btd-active {
+	background: blue;
+	cursor: default;
+}
+
+.btd-icon-center {
+	left: 50%;
+	top: 50%;
+}
+
+/* JAlert */
+.alt {
+	border-radius: 4px;
+	border: 1px solid #dcdcdc;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+	background: #FCFDE7;
+}
+
+.alt-caption {
+	font-weight: bold;
+	padding: 3px 10px;
+}
+
+.alt-text {
+	padding: 10px;
+}
+
+.alt-bt-area {
+	padding: 15px 10px 6px 10px;
+	position: relative;
+}
+
+.alt-bt-close {
+	background: red;
+	width: 16px;
+	height: 16px;
+	top: 6px;
+	right: 6px;
+}
+
+/* JDialog */
+.dlg {
+	min-height: 80px;
+	min-width: 20px;
+	overflow: visible;
+	background: #ffffff;
+}
+
+.dlg-client {
+	top: 3px;
+	left: 3px;
+	right: 3px;
+	bottom: 3px;
+}
+
+.dlg-arrow {
+	width: 8px;
+	height: 15px;
+	background-image: url(icons16.gif);
+}
+
+.dlg-arrow-left-top {
+	left: -8px;
+	background-position: -8px -96px;
+}
+
+.dlg-arrow-right {
+	right: -8px;
+	background-position: -16px -96px;
+}
+
+.dlg-arrow-top-right,.dlg-arrow-top-left {
+	top: -8px;
+	background-position: -48px -96px;
+	width: 15px;
+	height: 8px;
+}
+
+.dlg-arrow-left {
+	left: -8px;
+	background-position: -8px -96px;
+}
+
+/* JWindow ********************************************************************/
+.win {
+	min-width: 100;
+	min-height: 100;
+	border: solid 1px #c0c0c0;
+	background: #ffffff;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+}
+
+.win-title {
+	height: 26px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+.win-icon {
+	width: 16px;
+	height: 16px;
+	left: 4px;
+	top: 4px;
+}
+
+.win-caption {
+	left: 24px;
+	height: 26px;
+	right: 24px;
+	line-height: 26px;
+}
+
+.win-button {
+	top: 4px;
+	right: 4px;
+	width: 16px;
+	height: 16px;
+	background: url(icons16.gif) 0px -64px;
+	cursor: pointer;
+}
+
+.win-button-over {
+	background-position: -16px -64px;
+}
+
+.win-client {
+	top: 29px;
+	left: 2px;
+	right: 2px;
+	bottom: 2px;
+}
+
+/* JMenubar*/
+.mnb {
+	padding: 2px;
+	height: 25px;
+	background-image: -webkit-linear-gradient(top, whiteSmoke, #F1F1F1);
+}
+
+.mnb-client {
+	position: relative;
+	width: 10000px;
+}
+
+.mnb-item {
+	position: relative;
+	float: left;
+	overflow: visible;
+	padding: 2px 4px 2px 4px;
+	margin-right: 3px;
+}
+
+/* JTree */
+.tvw {
+	
+}
+
+.tvw-item {
+	height: 21px;
+	position: relative;
+}
+
+.tvw-item-ident {
+	overflow: visible;
+}
+
+.tvw-item-arrow {
+	background: url(icons16.gif) -64px -32px;
+	top: 2px;
+	width: 16px;
+	height: 16px;
+}
+
+.tvw-item-arrow-none {
+	display: none;
+}
+
+.tvw-item-arrow-opened {
+	background-position: -64px 0;
+}
+
+.tvw-item-arrow-closed {
+	background-position: -64px -16px;
+}
+
+.tvw-item-icon {
+	background: url(icons16.gif) -16px -32px;
+	left: 17px;
+	top: 2px;
+	width: 16px;
+	height: 16px;
+}
+
+.tvw-item-icon-opened {
+	background-position: -32px -32px;
+}
+
+.tvw-item-icon-closed {
+	background-position: -48px -32px;
+}
+
+.tvw-item-label {
+	left: 38px;
+	top: 2px;
+	width: 600px;
+	height: 16px;
+	line-height: 16px;
+}
+
+/* JContainer */
+.ctn {
+	background: #FFFFFF;
+}
+
+.ctn-scrollarea {
+	top: 0px;
+	left: 0px;
+}
+
+.ctn-drag-over {
+	background: #fff2ec;
+}
+
+/* JApplication */
+.app {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #ffffff; /*url(app-bg.png);*/
+}
+
+.app-nocompatible {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1000;
+	background: #233041;
+	color: #ffffff;
+}
+
+.app-nocompatible h1,h2,h3 {
+	text-align: center;
+	font-weight: normal
+}
+
+.app-nocompatible h3 {
+	color: #d7ebff;
+}
+
+/* JLabel *********************************************************************/
+.lbl-background {
+	background: #ffffff;
+}
+
+.lbl-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	border: none;
+	border: solid 1px #c0c0c0;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.lbl-input:focus {
+	outline: none;
+}
+
+.lbl-editable {
+	cursor: pointer;
+}
+
+.lbl-3d {
+	font: bold 100px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #ffffff;
+	padding: 3px 8px;
+	text-shadow: 0px 0px 0 rgb(231, 231, 231), 1px 1px 0 rgb(216, 216, 216),
+		2px 2px 0 rgb(202, 202, 202), 3px 3px 0 rgb(187, 187, 187), 4px 4px 0
+		rgb(173, 173, 173), 5px 5px 0 rgb(158, 158, 158), 6px 6px 0
+		rgb(144, 144, 144), 7px 7px 6px rgba(0, 0, 0, 0.6), 7px 7px 1px
+		rgba(0, 0, 0, 0.5), 0px 0px 6px rgba(0, 0, 0, .2);
+	overflow: visible;
+}
+
+div.jlbl-editable:hover {
+	background: #b6b6b6;
+}
+
+/* JTabPanel ******************************************************************/
+.tbp {
+	
+}
+
+.tbp-tabs {
+	top: 2px;
+	left: 2px;
+	right: 2px;
+	height: 32px;
+	overflow: visible;
+}
+
+.tbp-client {
+	top: 35px;
+	left: 2px;
+	right: 2px;
+	bottom: 2px;
+}
+
+.tbp-tab {
+	top: 6px;
+	overflow: visible;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	padding: 0 10px 0 10px;
+	margin-left: 2px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom: none;
+	cursor: pointer;
+	color: #525252;
+	font-weight: normal;
+	background-image: -webkit-linear-gradient(top, #f7f7f7, #eeeeee, #f7f7f7);
+}
+
+.tbp-tab-active {
+	top: 4px;
+	height: 27px;
+	line-height: 27px;
+	background: #ffffff;
+	cursor: default;
+	color: #000;
+}
+
+/* JButton ********************************************************************/
+.btn {
+	vertical-align: middle;
+	text-align: center;
+	min-height: 15px;
+}
+
+.btn-action {
+	background-image: -webkit-linear-gradient(top, #4D90FE, #4787ED);
+	border-color: #ff0000;
+	color: #ffffff;
+	text-shadow: 0px 1px 0px rgba(36, 0, 0, 0.7);
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-action-over {
+	background-image: -webkit-linear-gradient(top, #3682fe, #166dfe);
+	border-color: #015bf1;
+	color: #f9dcd9;
+}
+
+.btn-action-down {
+	background-image: -webkit-linear-gradient(top, #2577fe, #126afe);
+	box-shadow: inset 1px 1px 0 #126afe;
+	color: #f9dcd9 !important;
+	text-shadow: 0px 1px 0px #0150d3;
+}
+
+.btn-danger {
+	background-image: -webkit-linear-gradient(top, #DD4B39, #D14836);
+	border-color: #ff0000;
+	color: #ffffff;
+	text-shadow: 0px 1px 0px rgba(36, 0, 0, 0.7);
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger-over {
+	background-image: -webkit-linear-gradient(top, #db3a28, #d13423);
+	border-color: #9b281c;
+	color: #f9dcd9;
+}
+
+.btn-danger-down {
+	background-image: -webkit-linear-gradient(top, #cf3423, #bf3020);
+	box-shadow: inset 1px 1px 0 #bf3020;
+	color: #f9dcd9 !important;
+	text-shadow: 0px 1px 0px rgba(102, 0, 0, 0.7);
+}
+
+.btn-over,.btn-over .btn-icon {
+	
+}
+
+.btn-down {
+	color: #797979;
+}
+
+.btn-disabled {
+	opacity: .5;
+	color: #909090;
+}
+
+.btn-arrow {
+	width: 24px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: none;
+}
+
+.btn-arrow div {
+	width: 7px;
+	height: 4px;
+	top: 50%;
+	left: 50%;
+	margin-left: -3px;
+	margin-top: -2px;
+	background: url(icons16.gif) -36px -54px;
+	cursor: inherit;
+}
+
+.btn-icon-left {
+	left: 4px;
+	top: 50%;
+}
+
+.btn-icon-top {
+	top: 4px;
+	left: 50%;
+}
+
+.btn-icon-right {
+	right: 4px;
+	top: 50%;
+}
+
+.btn-icon-bottom {
+	bottom: 4px;
+	left: 50%;
+}
+
+.btn-icon-center {
+	left: 50%;
+	top: 50%;
+}
+
+/* JGrid **********************************************************************/
+.grd {
+	
+}
+
+.grd-chead1 {
+	right: 0;
+	height: 26px;
+	background-image: -webkit-linear-gradient(top, #F8F8F8, #F0F0F0);
+}
+
+.grd-chead2 {
+	height: 26px;
+}
+
+.grd-rhead1 {
+	top: 25px;
+	bottom: 0;
+	background-image: -webkit-linear-gradient(left, #F8F8F8, #f0f0f0, #F8F8F8);
+}
+
+.grd-rhead2 {
+	border: solid 1px #D6D6D6;
+	border-style: none none solid none;
+}
+
+.grd-data1 {
+	top: 26px;
+	right: 0;
+	bottom: 0;
+}
+
+.grd-data2 {
+	background: #ffffff;
+}
+
+.grd-cell-head {
+	position: relative;
+	float: left;
+	height: 26px;
+	line-height: 26px;
+	border: 1px solid #D6D6D6;
+	border-style: none solid solid none;
+	text-align: center;
+	padding-left: 4px;
+	padding-right: 4px;
+	background: transparent;
+}
+
+.grd-cell-nums {
+	height: 26px;
+	line-height: 26px;
+	border: 1px solid #D6D6D6;
+	border-style: solid solid none none;
+	text-align: center;
+	background: transparent;
+}
+
+.grd-row-data {
+	height: 26px;
+	color: #4F4F4F;
+}
+
+.grd-cell-data {
+	position: relative;
+	float: left;
+	height: 26px;
+	line-height: 26px;
+	border: 1px solid #D6D6D6;
+	border-style: none solid solid none;
+	padding-left: 4px;
+	padding-right: 4px;
+	white-space: nowrap;
+}
+
+.grd-row-data-over {
+	
+}
+
+.grd-row-data-selected {
+	color: white;
+}
+
+.grd-cell-resize {
+	background: transparent;
+	width: 4px;
+	height: 26px;
+	z-index: 1;
+	cursor: e-resize;
+}
+
+.grd-indicator {
+	background: #D6D6D6;
+	width: 4px;
+	top: 0;
+	bottom: 0;
+}
+
+.grd-corner1 {
+	height: 26px;
+	border: 1px solid #D6D6D6;
+	border-style: none solid solid none;
+}
+
+.grd-corner2 {
+	height: 5px;
+	width: 5px;
+	background: #ffffff;
+	right: 0;
+	bottom: 0;
+}
+
+/* JLinkButton ****************************************************************/
+.lkb {
+	cursor: pointer;
+	color: #15C;
+	font-weight: normal;
+	text-decoration: underline;
+}
+
+.lkb-over {
+	
+}
+
+.lkb-down {
+	color: #0c3c8b;
+	text-shadow: 0 1px 1px #b9d1f9;
+}
+
+.lkb-disabled {
+	color: #c0c0c0;
+	cursor: default;
+	text-decoration: none;
+}
+
+/* JCheck */
+.chk {
+	height: 21px;
+	line-height: 21px;
+	vertical-align: middle;
+	overflow: visible;
+	padding-left: 18px
+}
+
+.chk-icon {
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+	margin-top: -7px;
+	top: 50%;
+	left: 0;
+	height: 13px;
+	width: 13px;
+	border: solid 1px #B2B2B2;
+	background: #fcfcfc;
+	overflow: visible;
+}
+
+.chk-checked .chk-icon div {
+	left: 1px;
+	top: -2px;
+	width: 13px;
+	height: 11px;
+	background: url(icons16.gif) -2px -18px;
+}
+
+.chk-over {
+	text-shadow: 0 1px 1px #d3d3d3;
+}
+
+.chk-over div.chk-icon {
+	-webkit-box-shadow: inset 0px 1px 1px #e2e2e2;
+	-moz-box-shadow: inset 0px 1px 1px #e2e2e2;
+	box-shadow: inset 0px 1px 1px #e2e2e2;
+}
+
+.chk-disabled {
+	color: #c0c0c0;
+}
+
+.chk-disabled div.chk-icon {
+	background: #c4c4c4;
+}
+
+/* JRadio */
+.opt {
+	overflow: visible;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.opt-icon {
+	display: block;
+	width: 12px;
+	height: 12px;
+	background: url(icons16.gif) -18px -18px;
+	cursor: pointer;
+}
+
+.opt-text {
+	cursor: pointer;
+}
+
+.opt-right .opt-icon {
+	float: left;
+	margin-left: 2px;
+}
+
+.opt-right .opt-text {
+	float: left;
+}
+
+.opt-left .opt-icon {
+	float: left;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.opt-left .opt-text {
+	margin-left: 2px;
+}
+
+.opt-top .opt-icon {
+	margin-top: 2px
+}
+
+.opt-top .opt-text {
+	
+}
+
+.opt-bottom .opt-icon {
+	margin-bottom: 2px
+}
+
+.opt-bottom .opt-text {
+	
+}
+
+.opt-disabled .opt-text {
+	color: #c1c1c1;
+}
+
+.opt-icon-disabled {
+	background-position: -34px -82px;
+}
+
+.opt-checked .opt-icon {
+	background-position: -50px -18px;
+}
+
+.opt-over {
+	text-shadow: 0 1px 1px #d3d3d3;
+}
+
+.opt-icon1 {
+	background: #e4e4e4;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.opt-checked .opt-icon1 {
+	background: #999999;
+}
+
+.opt-icon2 {
+	background: #e4e4e4;
+	width: 80px;
+	height: 4px;
+}
+
+.opt-checked .opt-icon2 {
+	background: #999999;
+}
+
+/* JPanel *********************************************************************/
+.pnl {
+	
+}
+
+.pnl-client {
+	top: 2px;
+	left: 2px;
+	right: 2px;
+	bottom: 2px;
+}
+
+.pnl-caption {
+	top: 2px;
+	height: 26px;
+	left: 2px;
+	right: 2px;
+	padding: 4px 2px 4px 8px;
+}
+
+/* JPanelGroup ****************************************************************/
+.png {
+	border: none;
+}
+
+.png-client1 {
+	top: 8px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #ffffff;
+}
+
+.png-client2 {
+	top: 7px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparent;
+	border: none;
+}
+
+.png-caption {
+	height: 16px;
+	left: 5px;
+	overflow: visible;
+	padding: 0 2px 0 2px;
+	background: #ffffff;
+}
+
+/* JMenu **********************************************************************/
+.mnu {
+	overflow: visible;
+	overflow-y: auto;
+	padding: 3px;
+}
+
+.mnu-caption {
+	position: relative;
+	white-space: nowrap;
+	padding: 4px 10px 4px 10px;
+	color: #333;
+	font-weight: bold;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);
+}
+
+.mnu-item {
+	position: relative;
+	white-space: nowrap;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 26px 0 26px;
+	margin: 1px 0 1px 0;
+	border: 1px solid transparent;
+}
+
+.mnu-item-over {
+	color: #ffffff;
+}
+
+.mnu-item-disabled {
+	color: #c0c0c0;
+	cursor: default;
+}
+
+.mnu-item-icon {
+	width: 16px;
+	height: 16px;
+	left: 3px;
+	top: 3px;
+}
+
+.mnu-item-checked {
+	background: url(icons16.gif) 0 -16px;
+}
+
+.mnu-item-arrow {
+	height: 16px;
+	width: 16px;
+	right: 3px;
+	top: 3px;
+	background: url(icons16.gif) 0 -32px;
+}
+
+.mnu-item-separator {
+	position: relative;
+	height: 5px;
+	padding-top: 2px;
+}
+
+.mnu-item-separator div {
+	position: relative;
+	background: #dcdcdc;
+	height: 1px;
+}
+
+/* JScrollbar */
+.scb {
+	background-color: #e6e6e6;
+	border-radius: 3px;
+	min-width: 5px;
+	min-height: 5px;
+}
+
+.scb-minus,.scb-plus {
+	width: 5px;
+	height: 5px;
+	display: none;
+}
+
+.scb-face {
+	top: 0;
+	left: 0;
+	width: 5px;
+	height: 5px;
+	background-color: #bebebe;
+	border-radius: 3px;
+}
+
+.scb-v {
+	
+}
+
+.scb-v .scb-track {
+	top: 0;
+	left: 0;
+	width: 5px;
+	bottom: 0px;
+}
+
+.scb-v .scb-minus {
+	bottom: 5px;
+	background: url(icons16.gif) -21px -5px;
+}
+
+.scb-v .scb-plus {
+	bottom: 0;
+	background: url(icons16.gif) -5px -5px;
+}
+
+.scb-v .scb-hidebt {
+	bottom: 0;
+}
+
+.scb-h {
+	
+}
+
+.scb-h .scb-track {
+	top: 0;
+	left: 0;
+	height: 5px;
+	right: 0px;
+}
+
+.scb-h .scb-minus {
+	right: 5px;
+	background: red;
+}
+
+.scb-h .scb-plus {
+	right: 0;
+	background: blue;
+}
+
+.scb-h .scb-hidebt {
+	right: 0;
+}
+
+/* JList */
+.lst {
+	background: #ffffff;
+}
+
+.lst-client {
+	top: 2px;
+	bottom: 2px;
+	left: 2px;
+	right: 2px;
+}
+
+.lst-data {
+	left: 0;
+	right: 0;
+}
+
+.lst-item {
+	position: relative;
+	width: 100%;
+	padding-left: 5px;
+	white-space: nowrap;
+}
+
+.lst-item-selected {
+	
+}
+
+.lst-item-over {
+	color: #000000;
+	background: #e8e8e8;
+}
+
+/* JCombo */
+.cmb {
+	min-height: 26px;
+	min-width: 19px;
+}
+
+.cmb-caption {
+	top: 0;
+	bottom: 0;
+	left: 6px;
+	right: 14px;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.cmb-arrow {
+	width: 16px;
+	height: 16px;
+	top: 50%;
+	margin-top: -8px;
+	right: 0;
+	background: url(icons16.gif) -32px -48px;
+}
+
+/* JText **********************************************************************/
+.txt {
+	min-height: 26px;
+	min-width: 20px;
+	overflow: visible;
+}
+
+.txt-icon {
+	width: 16px;
+	height: 16px;
+	left: 4px;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.txt input,.txt textarea {
+	position: absolute;
+	display: block;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	margin: 0;
+	padding: 0 3px 0 3px;
+	border: none;
+}
+
+.txt-focus {
+	box-shadow: 0 0 6px #dcdde1;
+}
+
+.txt-label-left {
+	right: 100%;
+	margin-right: 4px;
+	white-space: nowrap;
+}
+
+.txt-arrows {
+	right: 0;
+	width: 17px;
+	height: 100%;
+}
+
+.txt-arrow-up,.txt-arrow-dn {
+	width: 17px;
+	height: 50%;
+	border-radius: 0;
+	border: none;
+	border-left: solid 1px #dcdcdc;
+}
+
+.txt-arrow-up {
+	background: url(icons16.gif) -64px -50px;
+}
+
+div.txt-arrow-up:hover {
+	background-position: -80px -50px;
+}
+
+.txt-arrow-dn {
+	top: 50%;
+	background: url(icons16.gif) -32px -50px;
+	border-top: solid 1px #dcdcdc;
+}
+
+div.txt-arrow-dn:hover {
+	background-position: -48px -50px;
+}
+
+.txt-date {
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 20px;
+}
+
+.txt-date-ico {
+	top: 50%;
+	margin-top: -8px;
+	left: 2px;
+	width: 16px;
+	height: 16px;
+	background: url(icons16.gif) -80px 0;
+}
+
+.txt-in-tip {
+	width: 100%;
+	height: 100%;
+	color: #bcbcbc;
+}
+/* JModuleLoader */
+.mdd {
+	background: #ffffff;
+}
+
+.mdd-loading {
+	background: url(module_load_loading.gif);
+	width: 32px;
+	height: 32px;
+	top: 50%;
+	left: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+}
+
+/* DataView */
+.dtv {
+	overflow-y: auto;
+}
+
+.dtv-item {
+	padding: 5px;
+	cursor: pointer;
+}
+
+.dtv-item * {
+	cursor: pointer;
+}
+
+/* JToolbar *******************************************************************/
+.tbr {
+	height: 34px;
+}
+
+.tbr-caption {
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	line-height: 34px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tbr-horizontal-separator {
+	height: 8px;
+	left: 2px;
+	right: 2px;
+	background: url(h.gif) center -4px no-repeat;
+}
+
+.tbr-vertical-separator {
+	width: 8px;
+	top: 2px;
+	bottom: 2px;
+	background: url(v.gif) -4px center no-repeat;
+}
+
+/* JCalendar ******************************************************************/
+.cld {
+	width: 177px;
+	height: 193px;
+}
+
+.cld-header {
+	left: 0;
+	width: 177px;
+	height: 26px;
+	background-image: -webkit-linear-gradient(top, #dfdfdf, #e8e8e8);
+}
+
+.cld-btl {
+	width: 16px;
+	height: 16px;
+	left: 3px;
+	top: 5px;
+	background: url(icons16.gif) 0 -80px;
+}
+
+.cld-btr {
+	width: 16px;
+	height: 16px;
+	left: 156px;
+	top: 5px;
+	background: url(icons16.gif) 0 -48px;
+}
+
+.cld-btr-over,.cld-btl-over {
+	border-color: #0000a0;
+	margin: -1px 0 0 -1px;
+}
+
+.cld-btr-over {
+	background-position: -16px -48px;
+}
+
+.cld-btl-over {
+	background-position: -16px -80px;
+}
+
+.cld-month {
+	left: 21px;
+	height: 26px;
+	line-height: 26px;
+	text-align: center;
+	width: 133px;
+	color: #0000a0;
+}
+
+.cld-footer {
+	bottom: 0;
+	left: 0;
+	width: 177px;
+	height: 20px;
+	background-image: -webkit-linear-gradient(top, #dfdfdf, #e8e8e8);
+	text-align: center;
+	line-height: 20px;
+}
+
+.cld-bnow {
+	position: relative;
+	overflow: visible;
+	text-decoration: underline;
+	color: #a54150;
+	cursor: pointer;
+	display: inline;
+}
+
+.cld-week {
+	top: 26px;
+	left: 0;
+	width: 177px;
+	height: 20px;
+	background: #fff;
+}
+
+.cld-days {
+	left: 0;
+	width: 177px;
+	height: 125px;
+	top: 46px;
+	background: #ffffff;
+}
+
+.cld-wd {
+	height: 20px;
+	width: 22px;
+	text-align: center;
+	line-height: 20px;
+}
+
+.cld-days-row {
+	position: relative;
+	margin-bottom: 1px;
+	height: 20px;
+	width: 178px;
+}
+
+.cld-day {
+	width: 22px;
+	height: 20px;
+	line-height: 20px;
+	text-align: right;
+	padding-right: 4px;
+}
+
+.cld-day-deactive {
+	color: #c0c0c0;
+}
+
+.cld-day-d-over {
+	color: #e7c0c6;
+}
+
+.cld-day-active {
+	border-radius: 2px;
+	border: 1px solid #dcdcdc;
+	background-image: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+	font-weight: bold;
+}
+
+.cld-day-a-over {
+	color: #a54150;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px #fff;
+}
+
+.cld-col0 {
+	left: 7px;
+}
+
+.cld-col1 {
+	left: 30px;
+}
+
+.cld-col2 {
+	left: 53px;
+}
+
+.cld-col3 {
+	left: 76px;
+}
+
+.cld-col4 {
+	left: 99px;
+}
+
+.cld-col5 {
+	left: 122px;
+}
+
+.cld-col6 {
+	left: 145px;
+}

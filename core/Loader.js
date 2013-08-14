@@ -362,6 +362,7 @@ window.onerror = function(event, file, line) {
             xtype: {}, //aponta para a classe real
             prop: {}
         },
+        abstractClass={},
         edv,
         timeOut = 300,
         head = document.getElementsByTagName("head")[0],
@@ -1060,7 +1061,13 @@ window.onerror = function(event, file, line) {
             if (properties == "__inherit__") {
                 return null;
             }
-
+            
+            //se é abstrata, não pode ser instanciada diretamente
+            if (this && abstractClass[this._CLASS_]){
+                //console.log(this._CLASS_);
+                throw "["+Base._CLASS_+"] Class can't be instantiated.";
+            }
+            
             //usando o operador new
             if (Base.prototype._constructor) {
                 return Base.prototype._constructor.apply(this, arguments);
@@ -1089,7 +1096,12 @@ window.onerror = function(event, file, line) {
         if (obj._destructor) {
             Base.prototype._destructor = obj._destructor;
         }
-
+        
+        //destructor
+        if (obj._abstract) {
+            abstractClass[cls] = true;
+        }
+        
         //referencia global
         ns[s] = Base;
 
@@ -1429,5 +1441,7 @@ window.onerror = function(event, file, line) {
     jsf.classDefs = function(){
         return _defs;
     };
-    
+    jsf.classIsAbstract = function(cls){
+        return Boolean(abstractClass[cls]);
+    }
 }());

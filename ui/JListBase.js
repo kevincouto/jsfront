@@ -5,6 +5,7 @@
         _require: ["jsf.ui.JScrollbar", "jsf.ui.DisplayObject"],
         _extend: "display",
         _xtype: "listbase",
+        _abstract: true,
         
         _constructor: function(properties) {
             var me;

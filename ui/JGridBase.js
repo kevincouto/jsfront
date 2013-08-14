@@ -5,6 +5,7 @@
         _require: ["jsf.ui.JScrollbar", "jsf.ui.DisplayObject"],
         _extend: "display",
         _xtype: "gridbase",
+        _abstract: true,
         
         _constructor: function(properties) {
             jsf.Display.call(this);

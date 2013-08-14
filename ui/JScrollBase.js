@@ -4,10 +4,9 @@
     
     define("jsf.ui.JScrollBase", {
         _require: ["jsf.ui.JScrollbar", "jsf.ui.DisplayObject"],
-        
         _extend: "jsf.ui.DisplayObject",
-        
         _xtype: "scrollbase",
+        _abstract: true,
         
         _constructor: function(properties){
             jsf.ui.DisplayObject.call(this);

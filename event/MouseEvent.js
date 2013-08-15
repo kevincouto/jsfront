@@ -113,14 +113,11 @@ document.onselectstart = function() {
     
 // private functions:
     function mouseEventDispatcher(ui, element, mouseEventName, eventObj){
-        var target;
-        
         if (ui){
             //dispara o evento onDesignModeSelected da aplicação caso o componente esteja designMode = true 
             if (ui.designMode()) {
-                target = jsf.managers.SystemManager.application();
-                if (target.onDesignModeSelected && mouseEventName==jsf.event.MouseEvent.MOUSE_DOWN) {
-                    target.onDesignModeSelected(ui, evt);
+                if (ui._onComponentSelected && mouseEventName==jsf.event.MouseEvent.MOUSE_DOWN) {
+                    ui._onComponentSelected(ui, eventObj);
                 }
             }else{
                 if (ui["_"+mouseEventName]){

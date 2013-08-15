@@ -5,7 +5,7 @@ define("jsf.util.Object", {
             var i, o = {};
 
             for (i in defaultOptions) {
-                o[i] = options[i] != undefined ? options[i] : defaultOptions[i];
+                o[i] = (options && options[i] != undefined) ? options[i] : defaultOptions[i];
             }
 
             return o;

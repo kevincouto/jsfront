@@ -72,7 +72,8 @@
                 if (!control) {
                     return false;
                 }
-
+                
+                dragOptions.dragElement = null;
                 dragOptions = jsf.util.Object.mergeDefaultOptions(options, doDragDefaulOptions);
 
                 //se dragImage=null, será arrastado o próprio componente
@@ -132,8 +133,8 @@
         },
         onMouseMove: function(nativeEvent) {
             var
-                    x, y,
-                    r = true;
+                x, y,
+                r = true;
 
             y = nativeEvent.clientY - dragOptions.offsetY;
             x = nativeEvent.clientX - dragOptions.offsetX;
@@ -177,11 +178,9 @@
         },
         doDrag: function(display) {
             var
-                    element = dragOptions.dragElement || display.canvas(),
-                    evt = jsf.event.MouseEvent.getMouseEvent();
+                element = dragOptions.dragElement || display.canvas(),
+                evt = jsf.event.MouseEvent.getMouseEvent();
 
-            //element._classNameOld = element.className;
-            //element.className += ' noselect';
             element.oStyle = element.style.cssText;
             element.style.position = 'absolute';
 
@@ -192,11 +191,6 @@
             dragOptions.offsetY = evt.y - dragOptions.dragElement.offsetTop;
 
             emulateDrag.showBackground(true, dragOptions.cursor);
-
-            //avisa ao componente pai do elemento a ser arrastado que está iniciando um arrasto do seu filho
-            /*if (_uiTarget) {
-             //c._ondragstart(htmlElement);
-             }*/
         }
     };
     

@@ -167,7 +167,7 @@
              * Define/retorna a distância entre a borda superior do container e a bordar superior do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             top: {
                 type:"Number",
@@ -185,7 +185,7 @@
              * Define/retorna a distância entre a borda esquerda do container e a bordar esquerda do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             left: {
                 type:"Number",
@@ -203,7 +203,7 @@
              * Define/retorna a distância entre a borda direita do container e a bordar direita do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             right: {
                 type:"Number",
@@ -221,7 +221,7 @@
              * Define/retorna a distância entre a borda inferior do container e a bordar inferior do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             bottom: {
                 type:"Number",
@@ -239,7 +239,7 @@
              * Define/retorna a altura do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             height: {
                 type:"Number",
@@ -257,7 +257,7 @@
              * Define/retorna a largura do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             width: {
                 type:"Number",
@@ -276,7 +276,7 @@
              * Exibe/oculta o componente
              * @param {Boolean} value Um valor boleano(true|false), default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             visible: {
                 type:"Boolean",
@@ -307,42 +307,15 @@
                     this.updateDisplay();
                 }
             },
-        },
-        
-        _public: {
-            validator: function(value){
-                //get
-                if (value === undefined) {
+            
+            validator: {
+                type:"String",
+                get: function(){
                     return this._validator;
+                },
+                set: function(value){
+                    this._validator = value;
                 }
-                
-                //set
-                this._validator = value;            
-                return this;
-            },
-            
-            designMode: function(value){
-                //get
-                if (value === undefined) {
-                    return this._designMode;
-                }
-                
-                //set
-                this._designMode = value;            
-                return this;
-            },
-            
-            className: function(value){
-                //get
-                if (value === undefined) {
-                    return this._className;
-                }
-                
-                //set
-                this._className = this.firePropertyChange('className', value);
-                this._canvas.className = (this._canvasClass ? this._canvasClass+' ' : '') + value;
-                this.updateDisplay();
-                return this;
             },
                     
             /**
@@ -353,135 +326,126 @@
              * @example
              * obj1.borderRaius(6);
              * obj2.borderRaius('50%');
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            borderRadius: function(value){
-                //get
-                if (value === undefined){
+            borderRadius: {
+                type: "Number|String",
+                get: function(){
                     return this._borderRadius;
+                },
+                set: function(value){
+                    value = jsf.isString(value) ? value : (value + 'px')
+                    this._canvas.style.borderRadius = value;
+                    this._borderRadius = value;
                 }
-                
-                //set
-                this._canvas.style.mozBorderRadius = this._canvas.style.webkitBorderRadius = this._canvas.style.borderRadius = (value + 'px');
-                this._borderRadius = this.firePropertyChange('borderRadius', value);
-                
-                return this;
             },
             
-            border: function(value){
-                //get
-                if (value === undefined){
+            /**
+             * Define/retorna se o componente irá(true) ou não(false) mostrar borda.<br>
+             * @param {Boolean} value true mostra, false oculta, default: false
+             * @default false
+             * @example
+             * obj1.border(true);
+             * @returns {jsf.ui.DisplayObject}
+            */
+            border: {
+                type: "Boolean",
+                get: function(){
                     return this._border;
+                },
+                set: function(value){
+                    this._canvas.style.borderStyle = (value ? 'solid' : 'none');
+                    this._border = value;
                 }
-                
-                //set
-                this._canvas.style.borderStyle = (value ? 'solid' : 'none');
-                this._border = this.firePropertyChange('border', value);
-                
-                return this;
             },
             
-            background: function(value){
-                //get
-                if (value === undefined){
+            background: {
+                type: "Color",
+                get: function(){
                     return this._background;
+                },
+                set: function(value){
+                    this._canvas.style.background = value;
+                    this._background = value;
                 }
-                
-                //set
-                this._canvas.style.background = value;
-                this._background = this.firePropertyChange('background', value);
-                
-                return this;
             },
             
-            borderLeft: function(value){
-                //get
-                if (value === undefined){
+            borderLeft: {
+                type: "Boolean",
+                get: function(){
                     return this._borderLeft;
+                },
+                set: function(value){
+                    this._canvas.style.borderLeftStyle = (value ? 'solid' : 'none');
+                    this._borderLeft = value;
                 }
-                
-                //set
-                this._canvas.style.borderLeftStyle = (value ? 'solid' : 'none');
-                this._borderLeft = this.firePropertyChange('borderLeft', value);
-                
-                return this;
             },
             
-            borderRight: function(value){
-                //get
-                if (value === undefined){
+            borderRight: {
+                type: "Boolean",
+                get: function(){
                     return this._borderRight;
+                },
+                set: function(value){
+                    this._canvas.style.borderRightStyle = (value ? 'solid' : 'none');
+                    this._borderRight = value;
                 }
-                
-                //set
-                this._canvas.style.borderRightStyle = (value ? 'solid' : 'none');
-                this._borderRight = this.firePropertyChange('borderRight', value);
-                
-                return this;
             },
             
-            borderTop: function(value){
-                //get
-                if (value === undefined){
+            borderTop: {
+                type: "Boolean",
+                get: function(){
                     return this._borderTop;
+                },
+                set: function(value){
+                    this._canvas.style.borderTopStyle = (value ? 'solid' : 'none');
+                    this._borderTop = value;
                 }
-                
-                //set
-                this._canvas.style.borderTopStyle = (value ? 'solid' : 'none');
-                this._borderTop = this.firePropertyChange('borderTop', value);
-                
-                return this;
             },
             
-            borderBottom: function(value){
-                //get
-                if (value === undefined){
+            borderBottom: {
+                type: "Boolean",
+                get: function(){
                     return this._borderBottom;
+                },
+                set: function(value){
+                    this._canvas.style.borderBottomStyle = (value ? 'solid' : 'none');
+                    this._borderBottom = value;
                 }
-                
-                //set
-                this._canvas.style.borderBottomStyle = (value ? 'solid' : 'none');
-                this._borderBottom = this.firePropertyChange('borderBottom', value);
-                
-                return this;
             },
             
             /**
              * Define/retorna a distância (y) entre o centro do container e o centro do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            verticalCenter: function(value){
-                //get
-                if (value === undefined){
+            verticalCenter: {
+                type: "Number",
+                get: function(){
                     return this._verticalCenter;
+                },
+                set: function(value){
+                    this._verticalCenter = value;
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._verticalCenter = value;
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
              * Define/retorna a distância horizontal entre o centro a posição top do componente
              * @param {Number} value Um valor inteiro, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            horizontalCenter: function(value){
-                //get
-                if (value === undefined){
+            horizontalCenter: {
+                type: "Number",
+                get: function(){
                     return this._horizontalCenter;
+                },
+                set: function(value){
+                    this._horizontalCenter = value;
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._horizontalCenter = this.firePropertyChange('horizontalCenter', value);
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
@@ -493,167 +457,152 @@
              *     background:'#ff0000',
              *     borderWidth:5
              * });
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            style: function(value){
-                var i=null;
-                
-                //get
-                if (value === undefined) {
+            style: {
+                type: "Object",
+                get: function(){
                     return this._style;
+                },
+                set: function(value){
+                    var i;
+                    
+                    this._style = value;
+                    for (i in value){
+                        this._canvas.style[i] = value[i];
+                    }
+
+                    this.updateDisplay();
                 }
-                
-                //set
-                this._style = this.firePropertyChange('style', value);
-                for (i in value){
-                    this._canvas.style[i] = value[i];
-                }
-                
-                this.updateDisplay();
-                return this;
             },
             
             /**
              * Define/retorna as margens esquerda, direita, superior e inferior<br>
              * OBS: <i>O mesmo que definir valores iguais para as propriedades marginLeft, marginTop, marginRight e marginBottom</i>
              * @param {Number} value Um valor inteiro, default: undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            margin: function(value){
-                //get
-                if (value === undefined) {
+            margin: {
+                type: "Number",
+                get: function(){
                     return this._margin;
+                },
+                set: function(value){
+                    this._marginTop = this._marginRight = this._marginBottom = this._marginLeft = this._margin = parseInt(value, 10) || 0;
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._margin = this.firePropertyChange('margin', parseInt(value, 10) || 0);
-                this._marginTop = this._marginRight = this._marginBottom = this._marginLeft = this._margin;
-                this._updateParentDisplay();
-                return this;
             },
             
             /**
              * Define/retorna a margem esquerda do componente.
              * @param {Number} value Um valor inteiro, default: undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            marginLeft: function(value){
-                //get
-                if (value === undefined) {
+            marginLeft: {
+                type: "Number",
+                get: function(){
                     return this._marginLeft;
+                },
+                set: function(value){
+                    this._marginLeft = parseInt(value, 10) || 0;								
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._marginLeft = this.firePropertyChange('marginLeft', parseInt(value, 10) || 0);								
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
              * Define/retorna a margem superior do componente.
              * @param {Number} value Um valor inteiro, default: undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            marginTop: function(value){
-                //get
-                if (value === undefined) {
+            marginTop: {
+                type: "Number",
+                get: function(){
                     return this._marginTop;
+                },
+                set: function(value){
+                    this._marginTop = parseInt(value, 10) || 0;								
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._marginTop = this.firePropertyChange('marginTop', parseInt(value, 10) || 0);
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
              * Define/retorna a margem inferior do componente.
              * @param {Number} value Um valor inteiro, default: undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            marginBottom: function(value){
-                //get
-                if (value === undefined) {
+            marginBottom: {
+                type: "Number",
+                get: function(){
                     return this._marginBottom;
+                },
+                set: function(value){
+                    this._marginBottom = parseInt(value, 10) || 0;								
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._marginBottom = this.firePropertyChange('marginBottom', parseInt(value, 10) || 0);
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
              * Define/retorna a margem direita do componente.
              * @param {Number} value Um valor inteiro, default: undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            marginRight: function(value){
-                //get
-                if (value === undefined) {
+            marginRight: {
+                type: "Number",
+                get: function(){
                     return this._marginRight;
+                },
+                set: function(value){
+                    this._marginRight = parseInt(value, 10) || 0;								
+                    this._updateParentDisplay();
                 }
-                
-                //set
-                this._marginRight = this.firePropertyChange('marginRight', parseInt(value, 10) || 0);
-                this._updateParentDisplay();
-                
-                return this;
             },
             
             /**
              * Define/retorna o texto de dica do componente
              * @param {String} value O texto a ser mostrado quando o mouse estive sobre o componente, default: undefined
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            tipText: function(value){
-                //get
-                if (value === undefined) {
+            tipText: {
+                type: "String",
+                get: function(){
                     return this._tipText;
+                },
+                set: function(value){
+                    this._tipText = jsf.core.Lang.bind(this, 'tipText', value);
+                    this._canvas.title = value;
                 }
-                
-                //set
-                this._tipText = Lang.bind(this, 'tipText', this.firePropertyChange('tipText', value));
-                this._canvas.title = value;
-                
-                return this;
             },
             
             /**
              * Define/retorna o efeito que será aplicado quando o componente for exibido.
              * @param {Object} value
              * @default undefined
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            showEffect: function(value){
-                //get
-                if (value === undefined) {
+            showEffect: {
+                type: "Object",
+                get: function(){
                     return this._showEffect;
+                },
+                set: function(value){
+                    this._showEffect = value;
                 }
-                
-                //set
-                this._showEffect = this.firePropertyChange('showEffect', value);
-                return this;
             },
             
             /**
              * Define/retorna o efeito a ser aplicado no componente a ficar oculto
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
-            hideEffect: function(value){
-                //get
-                if (value === undefined) {
+            hideEffect: {
+                type: "Object",
+                get: function(){
                     return this._hideEffect;
+                },
+                set: function(value){
+                    this._hideEffect = value;
                 }
-                
-                //set
-                this._hideEffect = this.firePropertyChange('hideEffect', value);
-                return this;
-            },
+            }/*,
             
             rule: function(value){
                 //get
@@ -666,8 +615,10 @@
                 this.updateDisplay();
                 
                 return this;
-            },
+            }*/
+        },
         
+        _method: {
             invalidateSize: function(){
                 this._invalidateSize = true;
                 return this;
@@ -756,7 +707,7 @@
             
             /**
              * Redesenha o componente
-             * @returns {DisplayObject}
+             * @returns {jsf.ui.DisplayObject}
             */
             render: function(){
                 return this;
@@ -794,7 +745,7 @@
             * Move o componente para cima de todos os outros do container onde o mesmo faz parte.
             */
             moveToFront: function(){
-               this._canvas.style.zIndex = PopuDisplayObject.prototype.indexOrder()+2;
+               //TODO:
                return this;
             },
             
@@ -802,8 +753,12 @@
             * Move o componente para baixo de todos os outros do container onde o mesmo faz parte.
             */
             moveToBack: function(){
-               this._canvas.style.zIndex = null;
+               //TODO:
                return this;
+            },
+                    
+            designMode: function(){
+                this._designMode = true;
             }
         },
         
@@ -836,7 +791,12 @@
             }
         }
     });
-
+    
+    /**
+     * retorna as definições das regras css para o componente
+     * @param {jsf.ui.DisplayObject} o
+     * @returns {Object}
+     */
     function initRules(o){
         var i, defaultRules = o._rules, rules;
         
@@ -848,5 +808,7 @@
             }
             o._rules = defaultRules;
         }
+        
+        return defaultRules;
     }
 }());

@@ -40,6 +40,7 @@
             delete(jsf.Control.ALL[this._UIIndex]);
         },
         
+        //TODO: trocar por _listener
         _event: {
             enter     : function(){return false;},
             exit      : function(){return false;},
@@ -777,7 +778,7 @@
                         
                         ui._targetChild = element._captureMouseEvent ? element : target;
                         
-                        return (getDisabled || ui.designMode()) ? ui : (ui._enabled ? ui : null);
+                        return (getDisabled || ui._designMode) ? ui : (ui._enabled ? ui : null);
                     }
                     
                     if (!target && (element._captureMouseEvent || (element.getAttribute && element.getAttribute('_captureMouseEvent')))){

@@ -1337,30 +1337,23 @@ window.onerror = function(event, file, line) {
             }
         }
 
-        //carrega os arquivos do core
-        loadScript("jsf.core.Sheet");
-        loadScript("jsf.core.Alert");
+        loadScript("jsf.core.Sheet");     //loadScript("jsf.core.Alert");
         loadScript("jsf.core.Control");
         loadScript("jsf.core.Keyboard");
         loadScript("jsf.core.Lang");
         loadScript("jsf.core.Control");
-        loadScript("jsf.core.Validator");
         loadScript("jsf.core.Sprites");
         
         loadScript("jsf.managers.BrowserManager");
-        loadScript("jsf.managers.FocusManager");
-        loadScript("jsf.managers.LayoutManager");
-        loadScript("jsf.managers.PopupManager");
-        loadScript("jsf.managers.DragManager");
         loadScript("jsf.managers.SystemManager");
-        loadScript("jsf.managers.TemplateManager");
+        loadScript("jsf.managers.FocusManager");
+        loadScript("jsf.managers.LayoutManager");   //loadScript("jsf.managers.PopupManager");  //loadScript("jsf.managers.DragManager");    //loadScript("jsf.managers.TemplateManager");
         
         loadScript("jsf.util.Dom");
         loadScript("jsf.util.Util");
         loadScript("jsf.util.Object");
         
-        loadScript("jsf.rpc.HttpService");
-        loadScript("jsf.rpc.RemoteService");
+        //loadScript("jsf.rpc.HttpService");  //loadScript("jsf.rpc.RemoteService");
         
         loadScript("jsf.event.Event");
         

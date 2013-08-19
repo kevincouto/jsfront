@@ -355,17 +355,8 @@
                             control._container = this;
                         }
                         
-                        if (control instanceof jsf.Sprites){
+                        if (control instanceof jsf.core.Sprites){
                             this._sprites = control;
-                        }
-                       
-                        if (control instanceof jsf.core.Validator){
-                            this._validator = control;
-                        }
-                       
-                        if (control instanceof jsf.rpc.RemoteService){
-                            this._datasource[ control.id() ] = control;
-                            control._container = this;
                         }
                    }
                }

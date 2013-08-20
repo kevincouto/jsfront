@@ -2,6 +2,7 @@
 
 (function() {
     define("jsf.core.Alert",{
+        _require: "jsf.managers.PopupManager",
         _alias: "jsf.Alert",
         _constructor: function() {
             throw "Alert cannot be instantiated";

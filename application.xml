@@ -4,6 +4,8 @@
         <!-- <package name="custom" theme="false">libs/custom/</package> -->
     </packages>
     <imports>
+        <import src="application.js" />
+        <import src="jsf.core.Alert" />
         <import src="jsf.ui.JToolbar" />
         <import src="jsf.ui.JButton" />
         <import src="jsf.ui.JPanel" />
@@ -18,12 +20,15 @@
         <template name="template1"><div>#{label}</div></template>
     </templates>
     
+    <!-- top -->
     <toolbar>
         <button width="100" height="28" caption="New Project" onClick="actionNewProject"/>
         <button width="100" height="28" caption="Open Project"/>
         <separator />
-        <button width="100" height="28" caption="New Module" onClick="actionNewModule"/>
+        <button width="100" height="28" caption="New Module"/>
     </toolbar>
+    
+    <!-- left -->
     <container align="left" width="250">
         <panel align="top" height="200" caption="Module Tree">
             <treeview align="client" />
@@ -37,9 +42,13 @@
         </panel>
     </container>
     <splitter />
+    
+    <!-- client -->
     <container name="tbpModules" align="client" style="{background:'#DDDDDD'}" border="true" scroll="true">
         <container name="ctnModule" width="800" height="600" top="10" left="10" border="true" background="#FFFFFF" />
     </container>
+    
+    <!-- right -->
     <container align="right" width="250">
         <panel caption="Components" align="client">
             <list name="lstUI" align="client" template="template1" onMouseDown="lstUI_onMouseDown" />

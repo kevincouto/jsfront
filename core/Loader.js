@@ -1025,6 +1025,8 @@ window.onerror = function(event, file, line) {
         
         initConfig(config);
         
+        window[CONFIG.APP] = {};
+        
         //imports
         for (i=0; i<response.childNodes.length; i++){
             node = response.childNodes[i];
@@ -1041,8 +1043,17 @@ window.onerror = function(event, file, line) {
         
         //aguarda carregar as dependências
         ready(function() {
-            var mod = createComponente(response);
+            var 
+                i,
+                obj = window[CONFIG.APP],
+                mod = createComponente(response);
+            
             window[CONFIG.APP] = mod;
+            
+            for (i in obj){
+                window[CONFIG.APP][i] = obj[i];
+            }
+            
             ready(runApp);
         });
     };

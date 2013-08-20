@@ -950,8 +950,105 @@ window.onerror = function(event, file, line) {
         //System.idleTimeout(CONFIG.IDLE_SECONDS);
     }
     
-    jsf.run = function(config) {
-        var s, link, i, url = document.getElementById('loader').getAttribute('src');
+    var reservardTags = "imports packages templates";
+    function createComponente(node){
+        var 
+            cls, component, p, i,
+            properties = {},
+            attrs = node.attributes,
+            xtype = node.localName;
+        
+        //prepara o json com as propriedades
+        for (i in attrs){
+            p = attrs[i].localName;
+            properties[p] = attrs[i].textContent;
+        }
+        
+        //obtém a classe
+        cls = jsf.Super(xtype);
+        
+        //se a classe não existe, gera erro
+        if (!cls) {
+            jsf.exception('xtype[' + xtype + '] is undefined. verify log.');
+            return;
+        }
+        
+        //instancia a classe
+        component = new cls(properties);
+        
+        if (node.childNodes){
+            for (i=0; i<node.childNodes.length; i++){
+                if (node.childNodes[i].nodeType==1){
+                    if (reservardTags.indexOf(node.childNodes[i].localName)==-1){
+                        component.add( createComponente(node.childNodes[i]) );
+                    }
+                }
+            }
+        }
+        
+        return component;
+    }
+    jsf.runXml=function(){
+        var 
+            i, j, n, t, node, response, config,
+            xmlhttp = new XMLHttpRequest();
+        
+        xmlhttp.open("GET", "application.xml",false);
+        xmlhttp.send();
+        
+        response = xmlhttp.responseXML.firstChild;
+        
+        //prepara o config
+        config = {};        
+        config.application = response.getAttribute("name");
+        config.version = response.getAttribute("version");
+        
+        //packages
+        for (i=0; i<response.childNodes.length; i++){
+            node = response.childNodes[i];
+            if (node.nodeType==1){
+                if (node.localName=="packages"){
+                    for (j=0; j<node.childNodes.length; j++){
+                        if (node.childNodes[j].nodeType==1){
+                            n = node.childNodes[j].getAttribute("name");
+                            t = node.childNodes[j].getAttribute("theme");
+                            config.packages = config.packages || {};
+                            config.packages[n] = {
+                                value: node.childNodes[j].firstChild.nodeValue,
+                                theme: t=="" ? false : true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        initConfig(config);
+        
+        //imports
+        for (i=0; i<response.childNodes.length; i++){
+            node = response.childNodes[i];
+            if (node.nodeType==1){
+                if (node.localName=="imports"){
+                    for (j=0; j<node.childNodes.length; j++){
+                        if (node.childNodes[j].nodeType==1){
+                            jsf.require(node.childNodes[j].getAttribute("src"));
+                        }
+                    }
+                }
+            }
+        }
+        
+        //aguarda carregar as dependências
+        ready(function() {
+            var mod = createComponente(response);
+            window[CONFIG.APP] = mod;
+            ready(runApp);
+        });
+    };
+    
+    function initConfig(config){
+        var s, i, t, link, url = document.getElementById('loader').getAttribute('src');
         
         url = url.replace("core/Loader.js", "");
 
@@ -981,15 +1078,22 @@ window.onerror = function(event, file, line) {
         
         if (config.packages) {
             for (i in config.packages) {
-                s = config.packages[i];
+                s = typeof(config.packages[i])=="string" ? config.packages[i] : config.packages[i].value;
+                t = typeof(config.packages[i])=="string" ? false : config.packages[i].theme=="true";
 
                 //adiciona a barra no final caso nÃ£o exista
                 s = s.lastIndexOf("/") != s.length - 1 ? s + "/" : s;
 
                 if (s.indexOf("/") > -1 && s.indexOf(":") > -1) {//Ã© uma url completa
-                    CONFIG.PACKAGES[i] = s;
+                    CONFIG.PACKAGES[i] = {
+                        value: s,
+                        theme: t
+                    };
                 } else { //a url serÃ¡ Ã  partir da aplicaÃ§Ã£o
-                    CONFIG.PACKAGES[i] = realpath(s);
+                    CONFIG.PACKAGES[i] = {
+                        value: realpath(s),
+                        theme: t
+                    }
                 }
             }
         }
@@ -1014,8 +1118,8 @@ window.onerror = function(event, file, line) {
 
         //carrega temas dos outros pacotes
         for (i in CONFIG.PACKAGES) {
-            if (i != "jsf" && i != CONFIG.APP) {
-                s = CONFIG.PACKAGES[i];
+            if (i != "jsf" && i != CONFIG.APP && CONFIG.PACKAGES[i].theme) {
+                s = CONFIG.PACKAGES[i].value;
                 loadSheet(s + "themes/" + CONFIG.THEME + "/" + CONFIG.THEME + ".css");
             }
         }
@@ -1056,7 +1160,11 @@ window.onerror = function(event, file, line) {
         loadScript("jsf.ui.JModule");
         loadScript("jsf.ui.JApplication");
         loadScript("jsf.ui.JWindow");
-
+    }
+    
+    jsf.run = function(config) {
+        initConfig(config);
+        
         //aguarda todas as dependÃªncias serem carregadas e inicializa a aplicaÃ§Ã£o
         ready(function() {
             jsf.require(CONFIG.APP);

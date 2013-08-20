@@ -142,8 +142,7 @@
              * @default undefined
             */
             align: {
-                type: "String",
-                list: ["left", "top", "right", "bottom", "client", "center", "none"],
+                type: ["left", "top", "right", "bottom", "client", "center", "none"],
                 get: function(){
                     return this._align;
                 },

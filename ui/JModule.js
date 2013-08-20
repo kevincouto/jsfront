@@ -184,7 +184,7 @@
 
         control._module = module;
 
-        if (module[n] === undefined && control._id != n) {
+        if (module[n] === undefined && module.prototype && control._id != n) {
             if (module.prototype[n]) {
                 jsf.exception(n + "is invalid name!");
             } else {

@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/application.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+    <!DOCTYPE application SYSTEM "jsfront.dtd">
+    <application>
+    ...
+    </application>
+-->
+
+<!ENTITY % Boolean "(true|false)">
+
+<!-- Propriedades do jsf.core.Control -->
+<!ENTITY % controlAttrs
+ "name          CDATA          #IMPLIED
+  enabled       %Boolean;      #IMPLIED"
+  >
+
+<!-- Propriedades do jsf.ui.DisplayObject -->
+<!ENTITY % displayEvents
+ "  onClick     CDATA   #IMPLIED
+    onMouseDown CDATA   #IMPLIED
+    onMouseUp   CDATA   #IMPLIED"
+  >
+<!ENTITY % displayAttrs
+ "  %controlAttrs;
+    %displayEvents;
+    align               (left|top|right|bottom|client)          #IMPLIED
+    dropEnabled         %Boolean;      #IMPLIED
+    top                 CDATA          #IMPLIED
+    left                CDATA          #IMPLIED
+    width               CDATA          #IMPLIED
+    height              CDATA          #IMPLIED
+    right               CDATA          #IMPLIED
+    bottom              CDATA          #IMPLIED
+    visible             %Boolean;      #IMPLIED
+    borderRadius        CDATA          #IMPLIED
+    border              CDATA          #IMPLIED
+    background          CDATA          #IMPLIED
+    borderLeft          CDATA          #IMPLIED
+    borderRight         CDATA          #IMPLIED
+    borderTop           CDATA          #IMPLIED
+    borderBottom        CDATA          #IMPLIED
+    verticalCenter      CDATA          #IMPLIED
+    horizontalCenter    CDATA          #IMPLIED
+    style               CDATA          #IMPLIED
+    margin              CDATA          #IMPLIED
+    marginLeft          CDATA          #IMPLIED
+    marginTop           CDATA          #IMPLIED
+    marginBottom        CDATA          #IMPLIED
+    marginRight         CDATA          #IMPLIED
+    tipText             CDATA          #IMPLIED
+    showEffect          CDATA          #IMPLIED
+    hideEffect          CDATA          #IMPLIED"
+  >
+
+<!-- Propriedades do jsf.ui.JContainer -->
+<!ENTITY % containerAttrs
+ "  %displayAttrs;
+    layout  (absolute|horizontal|vertical)          #IMPLIED
+    caption  CDATA          #IMPLIED
+    scroll  CDATA          #IMPLIED
+    flex  CDATA          #IMPLIED
+    grap  CDATA          #IMPLIED
+    sprites  CDATA          #IMPLIED"
+  >
+
+
+<!-- Propriedades do jsf.ui.JModule -->
+<!ENTITY % moduleAttrs "%containerAttrs;">
+
+<!-- Tags que extendidas de jsf.ui.DisplayObject que podem ser adicionados em containers -->
+<!ENTITY % allDisplayObjects
+   "accordion | button | calendar | checkbox | combobox | container | datapicker | dataview |
+     edit | grid | image | label | linkbutton | list | menubar | moduleloader | option | panel |
+     password | radio | scrollbar | splitter | splitbutton | textbox | toolbar | treeview | sprites | tabpanel">
+
+<!-- o elemento item, não contém elementos filhos e (TODO:pode conter qualquer atributo) -->
+<!ELEMENT item EMPTY>
+<!ATTLIST item label CDATA #IMPLIED >
+  
+<!-- array só permite um ou mais elementos item -->
+<!ENTITY % array "(item)+">
+
+<!-- permite zero ou um elemento array -->
+<!ELEMENT dataProvider %array; >
+    
+<!--- reservad tag -->
+<!ELEMENT import EMPTY>
+<!ATTLIST import
+    src CDATA #IMPLIED
+  >
+
+<!--- jsf.ui.JApplication -->
+<!ELEMENT application (%allDisplayObjects; | import | package | template)*>
+<!ATTLIST application
+    %moduleAttrs;
+    version CDATA   #IMPLIED
+>
+
+<!--- jsf.ui.JModule -->
+<!ELEMENT module (%allDisplayObjects;)*>
+<!ATTLIST module 
+    %moduleAttrs;
+>
+
+<!--- jsf.ui.JContainer -->
+<!ELEMENT container (%allDisplayObjects;)*>
+<!ATTLIST container
+    %containerAttrs;
+  >
+
+<!--- jsf.ui.JPanel -->
+<!ELEMENT panel (%allDisplayObjects;)*>
+<!ATTLIST panel
+    %containerAttrs;
+  >
+
+<!--- jsf.ui.JTabPanel -->
+<!ELEMENT tabpanel (container)*>
+<!ATTLIST tabpanel
+    %containerAttrs;
+  >
+
+<!--- jsf.ui.JToolbar -->
+<!ELEMENT toolbar (%allDisplayObjects; | space | separator)*>
+<!ATTLIST toolbar
+    %displayAttrs;
+  >
+  
+<!--- jsf.ui.JSprites -->
+<!ELEMENT sprites EMPTY>
+<!ATTLIST sprites
+    %controlAttrs;
+    width CDATA #IMPLIED
+    height CDATA #IMPLIED
+    image CDATA #IMPLIED
+  >
+
+<!--- jsf.ui.JSeparator -->
+<!ELEMENT separator EMPTY>
+
+<!--- jsf.ui.JSpace -->
+<!ELEMENT space EMPTY>
+
+<!--- jsf.ui.JButton -->
+<!ELEMENT button EMPTY>
+<!ATTLIST button
+    %displayAttrs;
+    caption CDATA #IMPLIED
+  >
+
+<!--- jsf.ui.JCalendar -->
+<!ELEMENT calendar EMPTY>
+<!ATTLIST calendar
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JCheck -->
+<!ELEMENT checkbox EMPTY>
+<!ATTLIST checkbox
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JCombo -->
+<!ELEMENT combobox EMPTY>
+<!ATTLIST combobox
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JDataPicker -->
+<!ELEMENT datapicker EMPTY>
+<!ATTLIST datapicker
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JDataView -->
+<!ELEMENT dataview EMPTY>
+<!ATTLIST dataview
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JEdit -->
+<!ELEMENT editbox EMPTY>
+<!ATTLIST editbox
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JGrid -->
+<!ELEMENT datagrid EMPTY>
+<!ATTLIST datagrid
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JImage -->
+<!ELEMENT image EMPTY>
+<!ATTLIST image
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JLabel -->
+<!ELEMENT label EMPTY>
+<!ATTLIST label
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JLinkButton -->
+<!ELEMENT linkbutton EMPTY>
+<!ATTLIST linkbutton
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JList -->
+<!ELEMENT list (dataProvider | template)>
+<!ATTLIST list
+    %displayAttrs;
+    template CDATA #IMPLIED
+  >
+
+<!--- jsf.ui.JMenu -->
+<!ELEMENT menuitem EMPTY>
+<!ELEMENT menu (menuitem)>
+<!ATTLIST menu
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JMenubar -->
+<!ELEMENT menubar (menu)>
+<!ATTLIST menubar
+    %displayAttrs;
+  >
+<!--- jsf.ui.JModuleLoader -->
+<!ELEMENT moduleloader EMPTY>
+<!ATTLIST moduleloader
+    %displayAttrs;
+  >
+<!--- jsf.ui.JOption -->
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JPassword -->
+<!ELEMENT password EMPTY>
+<!ATTLIST password
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JRadio -->
+<!ELEMENT radio EMPTY>
+<!ATTLIST radio
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JScrollbar -->
+<!ELEMENT scrollbar EMPTY>
+<!ATTLIST scrollbar
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JSplitButton -->
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JSplitter -->
+<!ELEMENT splitter EMPTY>
+<!ATTLIST splitter
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JText -->
+<!ELEMENT textbox EMPTY>
+<!ATTLIST textbox
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JTree -->
+<!ELEMENT treeview EMPTY>
+<!ATTLIST treeview
+    %displayAttrs;
+  >
+
+<!--- jsf.ui.JWindow -->
+<!ELEMENT window EMPTY>
+<!ATTLIST window
+    %displayAttrs;
+  >

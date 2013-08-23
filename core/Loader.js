@@ -907,10 +907,125 @@ window.onerror = function(event, file, line) {
                 
                 document.body.appendChild(edv);
                 edv.rows[0].cells[0].innerHTML += '<p style="padding:2px;margin:0;margin-top:-1px;border:solid 1px #c0c0c0;border-style:solid none solid none">' + txt + "</p>";
+            },
+             
+            XML: {
+                /**
+                 * ex: find(node, "names name");
+                 */
+                find: function(node, tag){
+                    var 
+                        i,
+                        a = tag.split(" "),
+                        n = null;
+
+
+                    if (a.length>1){
+                        for (i=0; i<a.length; i++){
+                            n = jsf.XML.find(node, a[i]);
+                            if (n){
+                                node = n;
+                            }
+                        }
+                        return n;
+                    }
+
+                    for (i=0; i<node.childNodes.length; i++){
+                        if (node.childNodes[i].nodeType==1){
+                            if (node.childNodes[i].localName==tag){
+                                return node.childNodes[i];
+                            }
+                        }
+                    }
+
+                    for (i=0; i<node.childNodes.length; i++){
+                        n = jsf.XML.find(node.childNodes[i], tag);
+                        if (n){
+                            return n;
+                        }
+                    }
+
+                    return null;
+                },
+
+                /**
+                 * Se p2 for definido, assume p1 como sendo um filtro de nó
+                 * @param p1 {Function|String} requerido. ex: each(node, "names name", function(n){});
+                 * @param p2 {Function} opcional
+                 */
+                each: function(node, p1, p2){
+                    var 
+                        i, f, tag,
+                        a = p2 ? p1.split(" ") : [p2];
+
+                    if (a.length>1){
+                        tag = a.pop();
+                        node = jsf.XML.find(node, a.join(" "));
+                        jsf.XML.each(node, tag, p2);
+                        return;
+                    }
+
+                    f = p2 || p1;
+
+                    for (i=0; i<node.childNodes.length; i++){
+                        if (node.childNodes[i].nodeType==1){
+                            if (p2){
+                                if (p1==node.childNodes[i].localName){
+                                    f(node.childNodes[i]);
+                                }
+                            }else{
+                                f(node.childNodes[i]);
+                            }
+                        }
+                    }
+                },
+
+                attrs: function(node){
+                    var 
+                        i, p, obj={},
+                        attrs = node.attributes;
+
+                    //prepara o json com as propriedades
+                    for (i in attrs){
+                        p = attrs[i].localName;
+                        if (p){
+                            obj[p] = attrs[i].textContent;
+                        }
+                    }
+
+                    return obj;
+                },
+
+                attr: function(node, attr, default_){
+                    var 
+                        v = node.getAttribute(attr);
+
+                    return v || default_;
+                },
+
+                toJSON: function(xml){
+
+                },
+
+                load: function(file){
+                    var 
+                        i, xmlhttp = new XMLHttpRequest();
+
+                    xmlhttp.open("GET", file, false);
+                    xmlhttp.send();
+                    
+                    for (i=0; i<xmlhttp.responseXML.childNodes.length; i++){
+                        if (xmlhttp.responseXML.childNodes[i].nodeType==1){
+                            return xmlhttp.responseXML.childNodes[i];
+                        }
+                    }
+                    
+                    return null;
+                }
             }
         }
     });
-	
+    
     function runApp(){
         var app;
         
@@ -950,10 +1065,12 @@ window.onerror = function(event, file, line) {
         //System.idleTimeout(CONFIG.IDLE_SECONDS);
     }
     
-    var reservardTags = "imports packages templates";
+    var reservardTags = "import package template";
+    
+    //cria um componente com base em nó xml
     function createComponente(node){
         var 
-            cls, component, p, i,
+            cls, component, p, i, v,
             properties = {},
             attrs = node.attributes,
             xtype = node.localName;
@@ -979,74 +1096,79 @@ window.onerror = function(event, file, line) {
         if (node.childNodes){
             for (i=0; i<node.childNodes.length; i++){
                 if (node.childNodes[i].nodeType==1){
-                    if (reservardTags.indexOf(node.childNodes[i].localName)==-1){
-                        component.add( createComponente(node.childNodes[i]) );
+                    
+                    if (jsf.classDef(node.childNodes[i].localName)){
+                        if (component instanceof jsf.ui.JContainer){
+                            component.add( createComponente(node.childNodes[i]) );
+                        }
+                    }else {
+                        p = jsf.classDef(component._CLASS_)._PROPERTIES_[node.childNodes[i].localName];
+                        if (p){
+                            //define o conteudo da propriedade de acordo com o tipo de dado
+                            if (p.type=="Array"){
+                                v = [];
+                                jsf.XML.each(node.childNodes[i], "item", function(n){
+                                    v.push(jsf.XML.attrs(n));
+                                });                                
+                            }else{
+                                v = node.childNodes[i].textContent;
+                            }
+                            component[node.childNodes[i].localName](v);
+                        }
                     }
+                    
                 }
             }
         }
         
         return component;
     }
-    jsf.runXml=function(){
+    jsf.loadXMLFile = function(file){
         var 
-            i, j, n, t, node, response, config,
-            xmlhttp = new XMLHttpRequest();
-        
-        xmlhttp.open("GET", "application.xml",false);
-        xmlhttp.send();
-        
-        response = xmlhttp.responseXML.firstChild;
-        
-        //prepara o config
-        config = {};        
-        config.application = response.getAttribute("name");
-        config.version = response.getAttribute("version");
-        
-        //packages
-        for (i=0; i<response.childNodes.length; i++){
-            node = response.childNodes[i];
-            if (node.nodeType==1){
-                if (node.localName=="packages"){
-                    for (j=0; j<node.childNodes.length; j++){
-                        if (node.childNodes[j].nodeType==1){
-                            n = node.childNodes[j].getAttribute("name");
-                            t = node.childNodes[j].getAttribute("theme");
-                            config.packages = config.packages || {};
-                            config.packages[n] = {
-                                value: node.childNodes[j].firstChild.nodeValue,
-                                theme: t=="" ? false : true
-                            }
-                        }
+            n, t, response, config,
+            response = jsf.XML.load(file);
+            
+        //se o arquivo carregado for o xml da aplicação...    
+        if (file=="application.xml"){
+                //prepara o config
+                config = {};        
+                config.application = jsf.XML.attr(response, "name");
+                config.version     = jsf.XML.attr(response, "version");
+
+                //define os caminhos para os pacotes customizados
+                jsf.XML.each(response, "package", function(node){
+                    n = node.getAttribute("name");
+                    t = node.getAttribute("theme");
+                    config.packages = config.packages || {};
+                    config.packages[n] = {
+                        value: node.firstChild.nodeValue,
+                        theme: t=="" ? false : true
                     }
-                }
+                });
+
+                //carrega as classes básicas
+                initConfig(config);
+
+                window[CONFIG.APP] = {};
             }
-        }
+         
+        return response;
+    }
+    jsf.runXml=function(app){
+        var
+            xml = jsf.loadXMLFile(app || "application.xml"); //carrega o arquivo xml
         
-        initConfig(config);
+        //carrega os imports definido no xml
+        jsf.XML.each(xml, "import", function(node){
+            jsf.require(node.getAttribute("src"));
+        });
         
-        window[CONFIG.APP] = {};
-        
-        //imports
-        for (i=0; i<response.childNodes.length; i++){
-            node = response.childNodes[i];
-            if (node.nodeType==1){
-                if (node.localName=="imports"){
-                    for (j=0; j<node.childNodes.length; j++){
-                        if (node.childNodes[j].nodeType==1){
-                            jsf.require(node.childNodes[j].getAttribute("src"));
-                        }
-                    }
-                }
-            }
-        }
-        
-        //aguarda carregar as dependências
+        //aguarda carregar tudo
         ready(function() {
             var 
                 i,
                 obj = window[CONFIG.APP],
-                mod = createComponente(response);
+                mod = createComponente(xml);
             
             window[CONFIG.APP] = mod;
             

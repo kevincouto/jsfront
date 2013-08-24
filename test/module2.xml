@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "../doc/jsfront.dtd">
+<module>
+    <import src="jsf.ui.JToolbar" />
+    <toolbar caption="Module 2" />
+</module>    
+    

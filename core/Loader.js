@@ -1007,24 +1007,40 @@ window.onerror = function(event, file, line) {
 
                 },
 
-                load: function(file){
+                load: function(file, callback){
                     var 
-                        i, xmlhttp = new XMLHttpRequest();
+                        xmlhttp = new XMLHttpRequest();
+                    
+                    if (callback){
+                        xmlhttp.onreadystatechange = function() {
+                            if (xmlhttp.readyState == 4) {
+                                callback(onXMLResult(xmlhttp));
+                            }
+                        };
 
-                    xmlhttp.open("GET", file, false);
-                    xmlhttp.send();
-                    
-                    for (i=0; i<xmlhttp.responseXML.childNodes.length; i++){
-                        if (xmlhttp.responseXML.childNodes[i].nodeType==1){
-                            return xmlhttp.responseXML.childNodes[i];
-                        }
+                        xmlhttp.open("GET", file, true);
+                        xmlhttp.send();
+                    }else{
+                        xmlhttp.open("GET", file, false);
+                        xmlhttp.send();
+                        return onXMLResult(xmlhttp);
                     }
-                    
-                    return null;
                 }
             }
         }
     });
+    
+    function onXMLResult(xmlhttp){
+        var i;
+        
+        for (i=0; i<xmlhttp.responseXML.childNodes.length; i++){
+            if (xmlhttp.responseXML.childNodes[i].nodeType==1){
+                return xmlhttp.responseXML.childNodes[i];
+            }
+        }
+        
+        return null;
+    }
     
     function runApp(){
         var app;
@@ -1065,7 +1081,7 @@ window.onerror = function(event, file, line) {
         //System.idleTimeout(CONFIG.IDLE_SECONDS);
     }
     
-    var reservardTags = "import package template";
+    var reservardTags = "import package";
     
     //cria um componente com base em nó xml
     function createComponente(node){
@@ -1097,12 +1113,15 @@ window.onerror = function(event, file, line) {
             for (i=0; i<node.childNodes.length; i++){
                 if (node.childNodes[i].nodeType==1){
                     
+                    //se é tag componente
                     if (jsf.classDef(node.childNodes[i].localName)){
                         if (component instanceof jsf.ui.JContainer){
                             component.add( createComponente(node.childNodes[i]) );
                         }
                     }else {
                         p = jsf.classDef(component._CLASS_)._PROPERTIES_[node.childNodes[i].localName];
+                        
+                        //se é tag nome de propriedade de componente
                         if (p){
                             //define o conteudo da propriedade de acordo com o tipo de dado
                             if (p.type=="Array"){
@@ -1114,6 +1133,8 @@ window.onerror = function(event, file, line) {
                                 v = node.childNodes[i].textContent;
                             }
                             component[node.childNodes[i].localName](v);
+                        }else if (reservardTags.indexOf(node.childNodes[i].localName)==-1){
+                            jsf.exception (node.childNodes[i].localName + " not registered!");
                         }
                     }
                     
@@ -1123,6 +1144,7 @@ window.onerror = function(event, file, line) {
         
         return component;
     }
+    jsf.createComponent = createComponente;
     jsf.loadXMLFile = function(file){
         var 
             n, t, response, config,
@@ -1362,4 +1384,5 @@ window.onerror = function(event, file, line) {
     jsf.classIsAbstract = function(cls){
         return Boolean(abstractClass[cls]);
     }
+    jsf.createComponente = createComponente;
 }());

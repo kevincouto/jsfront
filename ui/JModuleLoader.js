@@ -1,7 +1,15 @@
 "use strict";
 
 (function(){
-
+    /*
+        <effect name="topToBottom">
+            <property name="top" from="0" to="100%" duration="0.3s" />
+        </effect>
+        <effect name="rightToLeft">
+            <property name="left" from="0" to="-100%" duration="0.3s" />
+            <property name="opacity" from="1" to="0" duration="0.4s" />
+        </effect>
+    */
     var transitions = {
         //[sai, entra]
         'none' : [],
@@ -64,7 +72,7 @@
 		
         _public: {
             load: function(module, params, callback) {
-                var mod, url = "", oName = "", i, config = jsf.config(), ns, me = this;
+                var mod, url = "", i, config = jsf.config(), ns, me = this;
 
                 this._load_callback = callback;
 
@@ -80,7 +88,7 @@
                 this._loading = true;
 
                 if (jsf.isString(module)) {
-                    url = config.URL_BASE + module + '.js';
+                    url = config.URL_BASE + module + '.xml';
                     ns = jsf.splitNamespace(module);
 
                     if (!ns.namespace) {
@@ -114,7 +122,31 @@
 
                 wait(this, true);
 
-                //carrega o arquivo js (módulo)
+                //carrega o arquivo xml de modo assíncrono
+                
+                jsf.XML.load(url, function(xml){
+                    //carrega os imports definido no xml
+                    jsf.XML.each(xml, "import", function(node){
+                        jsf.require(node.getAttribute("src"));
+                    });
+
+                    //aguarda carregar tudo
+                    jsf.ready(function() {
+                        var 
+                            mod = jsf.createComponente(xml);
+                        
+                        wait(me, false);
+                        ns.namespace[ ns.className ] = mod;
+
+                        me.dispatch('loaded');
+                        me.active(mod, params);
+
+                        me = null;
+                    });
+                });
+                
+                return this;
+                
                 jsf.require(url, function(status) {
                     if (status == 'error') {
                         wait(me, false);

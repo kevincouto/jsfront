@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE application SYSTEM "doc/jsfront.dtd">
+<!DOCTYPE application SYSTEM "../doc/jsfront.dtd">
 <application grap="2" version="1.0">
     <!-- <package name="custom" theme="false">libs/custom/</package> -->
 
@@ -14,7 +14,8 @@
     <import src="jsf.ui.JList" />
     <import src="jsf.ui.JSplitter" />
     <import src="jsf.ui.JSeparator" />
-
+    <import src="jsf.ui.JModuleLoader" />
+    
     <sprites name="icons" width="16" height="16" image="images/icons_16x16.gif" />
     
     <!-- BEGIN INTERFACE -->
@@ -42,18 +43,16 @@
     <splitter />
 
     <!-- client -->
-    <container name="tbpModules" align="client" style="{background:'#DDDDDD'}" border="true" scroll="true">
-        <container name="ctnModule" width="800" height="600" top="10" left="10" border="true" background="#FFFFFF" />
-    </container>
+    <moduleloader name="moduleLoader" align="client" border="true" />
 
     <!-- right -->
     <container align="right" width="250">
         <panel caption="Components" align="client">
-            <list name="lstUI" align="client" onMouseDown="lstUI_onMouseDown">
+            <list name="lstUI" align="client" onChange="lstUI_onChange">
                 <template><![CDATA[<b>#{label}</b>]]></template>
                 <dataProvider>
-                    <item label="label1"/>
-                    <item label="label2"/>
+                    <item label="module1" module="module1" />
+                    <item label="module2" module="module2" />
                 </dataProvider>
             </list>
         </panel>

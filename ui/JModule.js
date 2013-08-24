@@ -180,15 +180,17 @@
     }
 
     function setModule(module, control) {
-        var i, l, n = control.name();
+        var 
+            i, l, 
+            n = control.name(),
+            c = jsf.classDef(control._CLASS_);
 
         control._module = module;
 
-        if (module[n] === undefined && module.prototype && control._id != n) {
-            if (module.prototype[n]) {
-                jsf.exception(n + "is invalid name!");
+        if (module[n] === undefined && control._id != module._id) {
+            if (c.prototype[n]) {
+                jsf.exception(n + " is invalid name!");
             } else {
-                console.log(n);
                 module[n] = control;
             }
         }

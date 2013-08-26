@@ -105,6 +105,7 @@
 <!ATTLIST application
     %moduleAttrs;
     version CDATA   #IMPLIED
+    theme CDATA   #IMPLIED
 >
 
 <!--- jsf.ui.JModule -->

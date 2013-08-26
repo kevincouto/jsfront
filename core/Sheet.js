@@ -138,25 +138,21 @@
 
                 return null;
             },
-            getThemeRule: function(ruleComponent) {
+            getThemeRule: function() {
                 var i, s, config, sheet;
 
                 if (!rulesDef) {
                     config = jsf.config();
-                    sheet = jsf.Sheet.getSheet(config.THEME + '_components.css')
+                    sheet = jsf.Sheet.getSheet(config.THEME + '.css')
                     rulesDef = {};
 
                     for (i = 0; i < sheet.rules.length; i++) {
-                        if (sheet.rules[i].selectorText.substring(0, 7) == ".class-") {
-                            s = sheet.rules[i].style.content.replaceAll("'", "");
-                            rulesDef[sheet.rules[i].selectorText.substring(7)] = JSON.parse("{" + s + "}");
-                        }
+                        s = sheet.rules[i].selectorText.replace(".", "");
+                        rulesDef[s] = sheet.rules[i].cssText.replace(sheet.rules[i].selectorText,"");
                     }
                 }
 
-                ruleComponent = ruleComponent.toLowerCase().replaceAll(".", "_");
-
-                return rulesDef[ruleComponent];
+                return rulesDef;
             }
         }
     });

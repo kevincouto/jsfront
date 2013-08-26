@@ -749,17 +749,21 @@ window.onerror = function(event, file, line) {
             
             //se é abstrata, não pode ser instanciada diretamente
             if (this && abstractClass[this._CLASS_]){
-                //console.log(this._CLASS_);
                 throw "["+Base._CLASS_+"] Class can't be instantiated.";
             }
             
             //usando o operador new
             if (Base.prototype._constructor) {
+                if (this && Base._XTYPE_!="control"){
+                    this._PARENTS_ =  Base._XTYPE_ + (this._PARENTS_ ? " " + this._PARENTS_ : "");
+                }
+                //this.Super = Base.prototype;
                 return Base.prototype._constructor.apply(this, arguments);
             }
             
             return null;
         }
+        
         Base.prototype = new Super("__inherit__");
         for (i in prototype) {
             Base.prototype[i] = prototype[i];
@@ -793,6 +797,8 @@ window.onerror = function(event, file, line) {
         //define algumas propriedades estáticas que serão usadas principalmente no modo designer
         Base._CLASS_ = cls;
         Base._EXTENDS_ = obj._extend;
+        Base._TAG_ = obj._tag || obj._xtype;
+        Base._XTYPE_ = obj._xtype;
         Base._PROPERTIES_ = properties;
 
         //registra a classe
@@ -1083,22 +1089,36 @@ window.onerror = function(event, file, line) {
     
     var reservardTags = "import package";
     
+    var setTypeDefs = {
+        "boolean": {"true": true, "false":false, "TRUE":true, "FALSE":false}
+    };
+    function setType(type, value){
+        switch (type){
+            case "Boolean": return setTypeDefs.boolean[value]; 
+        }
+        
+        return value;
+    }
+    
     //cria um componente com base em nó xml
     function createComponente(node){
         var 
-            cls, component, p, i, v,
+            cls, component, p, i, v, pd, 
             properties = {},
             attrs = node.attributes,
             xtype = node.localName;
         
+        //obtém a classe
+        cls = jsf.Super(xtype);
+        
         //prepara o json com as propriedades
         for (i in attrs){
             p = attrs[i].localName;
-            properties[p] = attrs[i].textContent;
+            pd= cls._PROPERTIES_[p];
+            if (p){
+                properties[p] = pd ? setType(pd.type, attrs[i].textContent) : attrs[i].textContent;
+            }
         }
-        
-        //obtém a classe
-        cls = jsf.Super(xtype);
         
         //se a classe não existe, gera erro
         if (!cls) {
@@ -1156,7 +1176,8 @@ window.onerror = function(event, file, line) {
                 config = {};        
                 config.application = jsf.XML.attr(response, "name");
                 config.version     = jsf.XML.attr(response, "version");
-
+                config.theme       = jsf.XML.attr(response, "theme") || "default";
+                
                 //define os caminhos para os pacotes customizados
                 jsf.XML.each(response, "package", function(node){
                     n = node.getAttribute("name");
@@ -1261,7 +1282,7 @@ window.onerror = function(event, file, line) {
         head.appendChild(link);
 
         //carrega o tema do framework jsfront
-        loadSheet(CONFIG.URL_THEMES + 'core.css');
+        //loadSheet(CONFIG.URL_THEMES + 'core.css');
         loadSheet(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME + '.css');
         loadSheet(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME + '_components.css');
 

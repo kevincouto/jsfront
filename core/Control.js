@@ -116,43 +116,43 @@ define("jsf.core.Control", {
             }
         }
     },
-    _public: {
+    
+    _property:{
         /**
          * @property {String} name
          * @param {String} value
          * @returns {jsf.core.Control}
          */
-        name: function(value) {
-            // get
-            if (value === undefined) {
+        name: {
+            type: "String",
+            get: function() {
                 return this._name;
+            },
+            set: function(value){
+                if (this._name && jsf.Control.ALLN[this._name]) {
+                    delete(jsf.Control.ALLN[this._name]);
+                }
+
+                jsf.Control.ALLN[value] = this;
+                this._name = this.firePropertyChange('name', value);
             }
-
-            // set
-            if (this._name && jsf.Control.ALLN[this._name]) {
-                delete(jsf.Control.ALLN[this._name]);
-            }
-
-            jsf.Control.ALLN[value] = this;
-            this._name = this.firePropertyChange('name', value);
-
-            return this;
         },
         /**
          * @param {Boolean} value
          * @returns {jsf.core.Control}
          */
-        enabled: function(value) {
-            // get
-            if (value === undefined) {
+        enabled: {
+            type: "Boolean",
+            get: function() {
                 return this._enabled;
+            },
+            set: function(value){
+                this._enabled = this.firePropertyChange('enabled', !!value);
             }
-
-            // set
-            this._enabled = this.firePropertyChange('enabled', !!value);
-
-            return this;
         },
+    },
+    
+    _public: {
         /**
          * @param {String} eventName
          * @param {Function} callback

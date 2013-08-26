@@ -14,7 +14,6 @@
             this._children   = [];
             this._childrenEx = {};
             this._datasource = {};
-            this._canvas.className = 'ctn';
             
             this._applyProperties(properties);
         },

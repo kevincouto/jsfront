@@ -123,8 +123,9 @@
                 wait(this, true);
 
                 //carrega o arquivo xml de modo assíncrono
-                
                 jsf.XML.load(url, function(xml){
+                    window[ns.className] = {};
+                    
                     //carrega os imports definido no xml
                     jsf.XML.each(xml, "import", function(node){
                         jsf.require(node.getAttribute("src"));
@@ -133,7 +134,13 @@
                     //aguarda carregar tudo
                     jsf.ready(function() {
                         var 
-                            mod = jsf.createComponente(xml);
+                            i,
+                            mod = jsf.createComponente(xml),
+                            obj = mod;
+
+                        for (i in obj){
+                            window[CONFIG.APP][i] = obj[i];
+                        }
                         
                         wait(me, false);
                         ns.namespace[ ns.className ] = mod;

@@ -17,22 +17,8 @@
         _constructor : function(properties){
             jsf.Display.call(this);
             
-            this._template('<div class="btn-client"><span></span></div>');
-            this._client = this._canvas.firstChild;
             this._el_caption = this._client.firstChild;
-            
             this._iconAlign = "center";
-            
-            this._rules={
-                canvas  : "f1 btn",
-                down    : "btn-down",
-                disabled: "f4",
-                over    : "s1 btn-over",
-                bsnormal: "",
-                bsaction: " btn-action",
-                bsdanger: " btn-danger"
-            };
-            
             this._applyProperties(properties);
         },
         
@@ -105,7 +91,7 @@
                     return this._caption;
                 },
                 set: function(value) {
-                    this._el_caption.innerHTML = this._caption = value;
+                    this._client.innerHTML = this._caption = value;
                 }
             },
             
@@ -246,7 +232,7 @@
             
             render: function() {
                 var i, o, sprites, children;
-                
+                return this;
                 // se faz parte de um grupo de botões e está selecionado, todos os outros ficam não selecinados
                 if (this._group && this._selected) {
                     children = this._parent.children();
@@ -259,8 +245,8 @@
                     }
                 }
                 
-                this._canvas.className += " btn-icon-" + this._iconAlign;
-                this._canvas.style.lineHeight = this._client.offsetHeight + 'px';
+                //this._canvas.className += " btn-icon-" + this._iconAlign;
+                //this._canvas.style.lineHeight = this._client.offsetHeight + 'px';
                 
                 // alinha o icone, se existir
                 sprites = this.getSprites();

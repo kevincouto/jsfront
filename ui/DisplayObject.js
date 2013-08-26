@@ -9,12 +9,16 @@
         _xtype: "display",
         
         _constructor: function(){
+            var
+                cls = jsf.classDef(this._CLASS_);
+                
             jsf.Control.call(this);
             
-            this._canvas = this._client = jsf.Dom.create('div');
+            this._canvas = this._client = jsf.Dom.create(cls._TAG_, null, this._PARENTS_);
             
             //busca as definições das regras css para o componente
-            initRules(this);
+            this._rules = initRules(cls._XTYPE_);
+            this._rules.canvas = this._PARENTS_;
             
             this._canvas.setAttribute("_UID", this._id);
             
@@ -61,8 +65,8 @@
             dragend   : jsf.EMPTY_FUNCTION,
             drop      : jsf.EMPTY_FUNCTION,
             add       : jsf.EMPTY_FUNCTION,
-            mouseover : jsf.EMPTY_FUNCTION,
-            mouseout  : jsf.EMPTY_FUNCTION
+            mouseover : function(){this._updateCssRule()},
+            mouseout  : function(){this._updateCssRule()},
         },
         
         _protected: {
@@ -93,11 +97,11 @@
                 if (this._rules){
                     className = this._rules.canvas || "";
                     if (this._enabled){
-                        className += jsf.MouseEvent.isOver(this) && this._rules.over ? " " + this._rules.over : "";
-                        className += jsf.MouseEvent.isDown(this) && this._rules.down ? " " + this._rules.down : "";
-                        className += this._hasFocus && this._rules.focus ? " " + this._rules.focus : "";
+                        className += jsf.MouseEvent.isOver(this) ? this._rules.mouseover : "";
+                        className += jsf.MouseEvent.isDown(this) ? this._rules.mousedown : "";
+                        className += this._hasFocus              ? this._rules.focus     : "";
                     }else{
-                        className += ( this._rules.disabled ? " " + this._rules.disabled : "" );
+                        className += ( this._rules.disabled ? this._rules.disabled : "" );
                     }
                     
                     if (className!=""){
@@ -303,7 +307,7 @@
                     return this._enabled;
                 },
                 set: function(value){
-                    jsf.Control.prototype.enabled.call(this, value);
+                    jsf.Control.prototype.set_enabled.call(this, value);
                     this.updateDisplay();
                 }
             },
@@ -797,18 +801,15 @@
      * @param {jsf.ui.DisplayObject} o
      * @returns {Object}
      */
-    function initRules(o){
-        var i, defaultRules = o._rules, rules;
+    function initRules(xtype){
+        var rules = jsf.Sheet.getThemeRule( xtype ) || {};
         
-        rules = jsf.Sheet.getThemeRule( o._CLASS_ ) || {};
-        
-        if (defaultRules){
-            for (i in rules){
-                defaultRules[i] = rules[i] || defaultRules[i];
-            }
-            o._rules = defaultRules;
-        }
-        
-        return defaultRules;
+        return {
+            mousedown: rules[xtype+".mousedown"] ? " mousedown" : "",
+            mouseover: rules[xtype+".mouseover"] ? " mouseover" : "",
+            disabled : rules[xtype+".disabled"]  ? " disabled"  : "",
+            focus    : rules[xtype+".focus"]     ? " focus"     : ""
+        };
     }
+    
 }());

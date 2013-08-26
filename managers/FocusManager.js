@@ -5,11 +5,13 @@
     
     function canReceiveFocus(component){
         var
-            r = Boolean(component._focuset && (component instanceof jsf.ui.DisplayObject) && component.visible() && component.enabled());
+            c1, c2, r = Boolean(component._focuset && (component instanceof jsf.ui.DisplayObject) && component.visible() && component.enabled());
         
         if (r) {
-            r = component.canvas().offsetTop < component.parent().canvas.offsetHeight &&
-                component.canvas().offsetLeft < component.parent().canvas.offsetWidth;
+            c1 = component.canvas();
+            c2 = component.parent().canvas();
+            
+            r = c1.offsetTop < c2.offsetHeight && c1.offsetLeft < c2.offsetWidth;
         }
         
         return r;
@@ -75,7 +77,7 @@
     }
     
     function exitFocus(component){
-        var app = jsf.System.application();
+        var app = jsf.managers.SystemManager.application();
         
         if (app){
             app._canvas.focus();
@@ -91,7 +93,7 @@
     
     function nextContainer(container) {
         var
-            i, parent, children;
+            i, j, parent, children;
         
         if (!container) {
             return null;
@@ -162,7 +164,7 @@
             
             //retorna o próximo componente a receber o foco
             getNextFocusManagerComponent: function(){
-                var container, ca, component=null, a=active, app=jsf.System.application();
+                var container, ca, component=null, a=active, app=jsf.managers.SystemManager.application();
                 
                 if (!active){
                     

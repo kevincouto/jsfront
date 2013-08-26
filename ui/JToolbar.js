@@ -12,13 +12,10 @@
             
             this._captureChildMouseClick = true;
             
+            this._layout = 'custom';
             this._align = 'top';
             this._indent= 2;
             this._grap  = 3;
-            
-            this._canvas.innerHTML = '<div style="top:0;left:0;right:0;bottom:0"></div>';
-            this._client = this._canvas.firstChild;
-            this._canvas.className = this._rules.style2;
             
             this._applyProperties(properties);
         },
@@ -28,14 +25,18 @@
                 if (child instanceof jsf.Display){
                     this.dispatch(jsf.Event.ON_ITEM_CLICK, child);
                 }
-            }
-        },
-        
-        _protected: {
-            rules: {
-                style1: "h2 tbr",
-                style2: "h3 tbr",
-                style3: "h4 tbr"
+            },
+            resize: function(){
+                var 
+                    i, child,
+                    y = (this.canvas().offsetHeight/2),
+                    children= this.children();
+                
+                //calcula o margin-top dos filhos
+                for (i=0; i<children.length; i++){
+                    child = children[i];
+                    child.canvas().style.marginTop = (y - (child.canvas().offsetHeight/2))+'px';
+                }
             }
         },
         
@@ -80,6 +81,8 @@
             },
             
             render: function(){
+                
+                return;
                 var i, j, 
                     ym      = (this._canvas.offsetHeight/2),
                     xm      = (this._canvas.offsetWidth/2),

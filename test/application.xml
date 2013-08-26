@@ -1,63 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application SYSTEM "../doc/jsfront.dtd">
-<application grap="2" version="1.0">
+<application name="App" version="1.0" theme="google">
     <!-- <package name="custom" theme="false">libs/custom/</package> -->
 
     <import src="application.js" />
     
     <import src="jsf.core.Alert" />
     <import src="jsf.ui.JToolbar" />
-    <import src="jsf.ui.JButton" />
-    <import src="jsf.ui.JPanel" />
-    <import src="jsf.ui.JTree" />
-    <import src="jsf.ui.JTabPanel" />
-    <import src="jsf.ui.JList" />
-    <import src="jsf.ui.JSplitter" />
     <import src="jsf.ui.JSeparator" />
-    <import src="jsf.ui.JModuleLoader" />
+    <import src="jsf.ui.JButton" />
+    <import src="jsf.ui.JText" />
     
     <sprites name="icons" width="16" height="16" image="images/icons_16x16.gif" />
     
     <!-- BEGIN INTERFACE -->
-    <!-- top -->
-    <toolbar>
-        <button width="100" height="28" caption="New Project" onClick="actionNewProject"/>
-        <button width="100" height="28" caption="Open Project"/>
+    <toolbar caption="Button" top="10" left="10">
+        <button caption="Comentários" />
         <separator />
-        <button width="100" height="28" caption="New Module"/>
+        <button caption="Fechar" enabled="false" />
+        <button caption="Comentários" />
+        <separator />
+        <textbox />
     </toolbar>
-    
-    <!-- left -->
-    <container align="left" width="250">
-        <panel align="top" height="200" caption="Module Tree">
-            <treeview align="client" />
-        </panel>
-        <splitter align="top"/>
-        <panel align="client" height="200" caption="Component Inspector">
-            <tabpanel align="client">
-                <container caption="Properties"></container>
-                <container caption="Events"></container>
-            </tabpanel>
-        </panel>
-    </container>
-    <splitter />
-
-    <!-- client -->
-    <moduleloader name="moduleLoader" align="client" border="true" />
-
-    <!-- right -->
-    <container align="right" width="250">
-        <panel caption="Components" align="client">
-            <list name="lstUI" align="client" onChange="lstUI_onChange">
-                <template><![CDATA[<b>#{label}</b>]]></template>
-                <dataProvider>
-                    <item label="module1" module="module1" />
-                    <item label="module2" module="module2" />
-                </dataProvider>
-            </list>
-        </panel>
-    </container>
-    <splitter align="right" />
     
 </application>    
     

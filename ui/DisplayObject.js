@@ -84,6 +84,20 @@
             visibleOld  : true,
             invalidateSize : true,
             
+            insertComponent: function(component, cls){
+                if (cls){
+                    component._rules.canvas += (" "+cls);
+                    component.canvas().className = component._rules.canvas;
+                }
+                
+                component._parentComponentId = this.id();
+                component._parent = this;
+                
+                this._client.appendChild( component.canvas() );
+                
+                return component;
+            },
+            
             updateParentDisplay: function(){
                 if (this._parent){
                     this._parent.updateDisplay(this);
@@ -95,7 +109,7 @@
                 
                 //define a classe css do elemento _canvas caso o componente tenha definido _rules
                 if (this._rules){
-                    className = this._rules.canvas || "";
+                    className = (this._rules.canvas || "") + (this._shadow ? " shadow" : "") + (this._rules.custom || "");
                     if (this._enabled){
                         className += jsf.MouseEvent.isOver(this) ? this._rules.mouseover : "";
                         className += jsf.MouseEvent.isDown(this) ? this._rules.mousedown : "";
@@ -167,6 +181,27 @@
                 }
             },
             
+            shadow: {
+                type: "Boolean",
+                get: function(){
+                    return this._shadow;
+                },
+                set: function(value){
+                    this._shadow = value;
+                    this._updateCssRule();
+                }
+            },
+            
+            focuset: {
+                type: "Boolean",
+                get: function(){
+                    return this._focuset;
+                },
+                set: function(value){
+                    this._focuset = value;
+                }
+            },
+                    
             /**
              * Define/retorna a distância entre a borda superior do container e a bordar superior do componente
              * @param {Number} value Um valor inteiro, default: undefined
@@ -805,10 +840,10 @@
         var rules = jsf.Sheet.getThemeRule( xtype ) || {};
         
         return {
-            mousedown: rules[xtype+".mousedown"] ? " mousedown" : "",
-            mouseover: rules[xtype+".mouseover"] ? " mouseover" : "",
-            disabled : rules[xtype+".disabled"]  ? " disabled"  : "",
-            focus    : rules[xtype+".focus"]     ? " focus"     : ""
+            mousedown: rules.rulesStr.indexOf(xtype+".mousedown")>-1 ? " mousedown" : "",
+            mouseover: rules.rulesStr.indexOf(xtype+".mouseover")>-1 ? " mouseover" : "",
+            disabled : rules.rulesStr.indexOf(xtype+".disabled")>-1  ? " disabled"  : "",
+            focus    : rules.rulesStr.indexOf(xtype+".focus")>-1     ? " focus"     : ""
         };
     }
     

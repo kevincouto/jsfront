@@ -169,6 +169,15 @@
                 } catch (_e) {
                 }
             },
+            removeAll: function(htmlElement){
+                var i, r = htmlElement.childNodes;
+                
+                for (i=0; i<r.length; i++){
+                    htmlElement.removeChild(r[i]);
+                }
+                
+                return r;
+            },
             getStyle: function(o, property, camelProperty) {
                 if (o == null) {
                     return null;

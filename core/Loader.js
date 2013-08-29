@@ -1095,6 +1095,7 @@ window.onerror = function(event, file, line) {
     function setType(type, value){
         switch (type){
             case "Boolean": return setTypeDefs.boolean[value]; 
+            case "Array":   return jsf.isString(value) ? JSON.parse(value) : value;
         }
         
         return value;
@@ -1141,7 +1142,7 @@ window.onerror = function(event, file, line) {
                     }else {
                         p = jsf.classDef(component._CLASS_)._PROPERTIES_[node.childNodes[i].localName];
                         
-                        //se é tag nome de propriedade de componente
+                        //se a tag é nome de propriedade de componente
                         if (p){
                             //define o conteudo da propriedade de acordo com o tipo de dado
                             if (p.type=="Array"){
@@ -1284,13 +1285,13 @@ window.onerror = function(event, file, line) {
         //carrega o tema do framework jsfront
         //loadSheet(CONFIG.URL_THEMES + 'core.css');
         loadSheet(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME + '.css');
-        loadSheet(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME + '_components.css');
+        //loadSheet(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME + '_components.css');
 
         //carrega as imagens do tema do jsfront
-        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + 'h.gif');
-        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + 'v.gif');
-        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + 'icons16.gif');
-        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + 'icons32.gif');
+        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME+'_h.gif');
+        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/' + CONFIG.THEME+'_v.gif');
+        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/images/' + 'icons16.gif');
+        loadImage(CONFIG.URL_THEMES + CONFIG.THEME + '/images/' + 'icons32.gif');
 
         //carrega temas dos outros pacotes
         for (i in CONFIG.PACKAGES) {

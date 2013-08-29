@@ -1,147 +1,132 @@
 "use strict";
-
 (function(){
+    
+    define("jsf.ui.JMenubar",{
+        _require: ["jsf.ui.JContainer"],
+        _extend: "container",
+        _alias: "jsf.JMenubar",
+        _xtype: "menubar",
+        
+        _constructor : function(properties){
+            jsf.JContainer.call(this, properties);
+            this._align = 'top';
+            this._applyProperties(properties);
+        },
+        
+        _event:{
+            mousedown: function(element) {
+                setActiveElement(this, element);
+            },
+            mouseover: function(element) {
+                if (this._activeElement){
+                    setActiveElement(this, element);
+                }else{
+                    updateCssRule(this, element, "item over");
+                }
+            },
+            mouseout: function(element) {
+                updateCssRule(this, element, "item");
+            },
+            menuhide: function(menu){
+                var e = this._activeElement;
+                this._activeElement=null;
+                updateCssRule(this, e, "item");
+            }
+        },
+        
+        _property:{
+            itens: {
+                type:"Array",
+                get: function(){
+                    return this._itens;
+                },
+                set: function(value){
+                    this._itens = value;
+                    this._itensCreated = false;
+                }
+            },
+            
+            menubarStyle: {
+                type:"String",
+                get: function(){
+                    return this._toolbarStyle;
+                },
+                set: function(value){
+                    this._toolbarStyle = value;
+                }
+            }
+        },
+        
+        _public: {
+            render: function(){
+                createItens(this);
+            }
+        }
+    });
+    
+//private functions
+    function setActiveElement(menubar, element){
+        var 
+            menu, r,
+            id = element.getAttribute("menuId"),
+            e  = menubar._activeElement;
+        
+        if ( id ){
+            menu = jsf.Control.get(id);
+            menubar._activeElement = null;
 
-	define("JMenubar", {
-		extend: "DisplayObject",
-		
-		_constructor : function(properties){
-			DisplayObject.call(this);
-			
-	        var me = this;
-	        
-			//this._captureChildMouseClick = true;
-			this._xtypeChild = 'JMenu';
-	        this._menusIndex = 0;
-	        this._menus = {};
-	        this._el_captions = [];
-	        this._elOver = null;
-			
-	        this._align= 'top';		
-			
-			this._canvas.className = 'ui-fc ui-bd mnb';
-	        this._client = this._canvas.appendChild(Dom.create('div', false, 'mnb-client'));
-			
-	        //context = JMenu
-	        this._onhideMenu = function(){
-	            this._JMenu__onhide();
-	            
-	            if (me._activeCaption){
-	                Dom.removeClass(me._activeCaption, 'ui-ac-it');
-	                Dom.removeClass(me._activeCaption, 'ui-hl');
-	                me._activeCaption = null;
-	            }
-	        };
-	        
-			this._applyProperties(properties);
-		}
-	});
-	
-	var p = JMenubar.prototype = Extend(DisplayObject);
-	
-//protected methods:	
-    p._onmouseover = function(el, evt){
-        if (el.isCaption){
-            if (this._activeCaption){
-                this._showMenu(el);
-            }else{
-                Dom.addClass(el, 'ui-hl');
+            if (e){
+                jsf.managers.PopupManager.remove( jsf.Control.get(e.getAttribute("menuId")) );
+                updateCssRule(menubar, e, "item");
             }
             
-            this._elOver = el;
-        }
-    };
-    
-    p._onmouseout = function(el, evt){
-        if (this._elOver && !this._activeCaption){
-            if (this._elOver != this._elDown){
-                Dom.removeClass(this._elOver, 'ui-hl');
-                this._elOver = null;
+            //exibe o menu
+            if (menu){
+                r = jsf.Dom.rect(element);
+                menu.shadow(true);
+                jsf.managers.PopupManager.add({
+                    target: menu,
+                    owner:  menubar,
+                    position:{
+                        x: r.left,
+                        y: r.top + r.height
+                    },
+                    onhide: menubar._onmenuhide
+                });
             }
+            updateCssRule(menubar, element, "item down");
+            menubar._activeElement = element;
         }
-    };
+    }
     
-    p._onmousedown = function(el, evt){
-        if (el.isCaption){
-            this._showMenu(el);
+    function updateCssRule(component, element, cls){
+        if (element && element.getAttribute("menuId") && !component._activeElement && component._activeElement!=element && element.getAttribute('_captureMouseEvent') ){
+            element.className = cls;
+            component._updateCssRule();
         }
-    };
+    }
     
-    p._showMenu = function(el){
-        var m, r;
+    function createItens(component){
+        var 
+            i, c, html="";
         
-        //já está visivel, retorna
-        if (el==this._activeCaption){
+        if (component._itensCreated){
             return;
         }
         
-        //existe um outro sendo exibido, oculta
-        if (this._activeCaption){
-            this._hideMenu(this._activeCaption);
-        }
-        
-        //exibe o menu
-        r = Dom.rect(el);
-        m = DisplayObject.get(el.menuUIIndex);
-        m.caption(null).show(r.left, r.top+r.height);
-        this._activeCaption = el;
-        
-        Dom.addClass(el, 'ui-ac-it');
-    };
-    
-    p._hideMenu = function(el){
-        var m = DisplayObject.get(el.menuUIIndex);
-        m.hide();
-        
-        Dom.removeClass(el, 'ui-hl');
-        this._activeCaption = null;
-    };
-    
-	/*p._onclick = function(element, evt, child){
-		if (child instanceof DisplayObject){
-			this.dispatch(Event.ON_ITEM_CLICK, child);
-		}
-	};*/
-
-//public methods:	
-    p.add = function(menu){
-        var id = this._menusIndex + '_' + menu._id;
-        
-        menu._JMenu__onhide = menu._onhide;
-        menu._onhide = this._onhideMenu;
-        menu._id2_ = id;
-        
-        this._menusIndex++;
-        this._menus[id] = menu;
-        this.updateDisplay();
-    };
-    
-    p.remove = function(menu){
-        delete(this._menus[menu._id2_]);
-        this.updateDisplay();
-    };
-    
-	p.render = function(){
-        var i=null, m, j=0, e;
-        
-		for (i in this._menus){
-            m = this._menus[i];
-            
-            if (!this._el_captions[j]){
-                e = this._client.appendChild(Dom.create('div', false, 'mnb-item'));
-                e.isCaption = true;
-                e.menuUIIndex = m._UIIndex;
-                e.caption = m._caption;
-                MouseEvent.enabledEvents(e);
-                this._el_captions.push(e);
+        if (component._itens){
+            for (i=0; i<component._itens.length; i++){
+                c = component.module()[ component._itens[i] ];
+                if (c){
+                    html += '<div menuId="' + c.id() + '" class="item" _captureMouseEvent="true">'+
+                                '<div>' + (c._caption || component._itens[i]) + '</div>'+
+                                '<span class="item-r"></span>'+
+                            '</div>';
+                }
             }
-            
-            e = this._el_captions[j];
-            e.innerHTML = e.caption;
-            
-            j++;
         }
-	};
+        
+        component._client.innerHTML = html;
+        component._itensCreated = true;
+    }
 }());
-
-Class.register('JMenubar', JMenubar);

@@ -7,20 +7,64 @@
     
     <import src="jsf.core.Alert" />
     <import src="jsf.ui.JToolbar" />
+    <import src="jsf.ui.JMenubar" />
     <import src="jsf.ui.JSeparator" />
     <import src="jsf.ui.JButton" />
     <import src="jsf.ui.JText" />
+    <import src="jsf.ui.JSplitButton" />
+    <import src="jsf.ui.JMenu" />
     
-    <sprites name="icons" width="16" height="16" image="images/icons_16x16.gif" />
+    <sprites name="icons" width="16" height="16" image="../themes/google/images/icons16.gif" />
     
-    <!-- BEGIN INTERFACE -->
+    <!-- INTERFACE -->
+    <menu name="menuArquivo" caption="Arquivo">
+        <itens>
+            <item label="Compartilhar" enabled="false" />
+            <item label="-" />
+            <item label="Novo" />
+            <item label="Abrir" icon="[[2,3]]" />
+            <item label="Renomear" />
+            <item label="Fazer uma cópia" />
+            <item label="Importar" />
+            <item label="-" />
+            <item label="Sair" />            
+        </itens>
+    </menu>
+    <menu name="menuEditar" caption="Editar">
+        <itens>
+            <item label="Desfazer" />
+            <item label="Refazer" />
+            <item label="-" />
+            <item label="Recortar" />
+            <item label="Copiar" />
+            <item label="Colar" />
+            <item label="-" />
+            <item label="Localizar e Substituir" />
+            <item label="-" />
+            <item label="Limpar" />
+            <item label="Excluir Todos" />            
+        </itens>
+    </menu>
+    
+    <menubar itens='["menuArquivo","menuEditar"]' />
+        
     <toolbar caption="Button" top="10" left="10">
-        <button caption="Comentários" />
+        <button caption="Normal" width="100"/>
         <separator />
-        <button caption="Fechar" enabled="false" />
-        <button caption="Comentários" />
+        <button caption="Disabled" enabled="false" />
+        <separator />
+        <button group="1" width="25" height="25" buttonStyle="flat" focuset="false"><caption><![CDATA[<b>N</b>]]></caption></button>
+        <button group="1" width="25" height="25" buttonStyle="flat" focuset="false"><caption><![CDATA[<i>I</i>]]></caption></button>
+        <button group="1" width="25" height="25" buttonStyle="flat" focuset="false"><caption><![CDATA[<u>U</u>]]></caption></button>
+        <separator />
+        <button caption="Togglet" togglet="true" iconMap="[[0,5]]" iconAlign="top" height="38" width="60" focuset="false" />
+        <separator />
+        <button iconMap="[[2,3]]" width="25" height="25" buttonStyle="flat" focuset="false" />
         <separator />
         <textbox />
+        <separator />
+        <splitbutton buttonStyle="flat" popup="menuArquivo" />
+        <splitbutton />
     </toolbar>
     
 </application>    

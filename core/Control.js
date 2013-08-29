@@ -32,7 +32,7 @@ define("jsf.core.Control", {
          * @returns {jsf.core.Control}
          */
         get: function(id) {
-            return jsf.Control.ALLN[id] || jsf.Control.ALL[id];
+            return jsf.Control.ALL[id] || jsf.Control.ALLN[id];
         }
     },
     _event: {

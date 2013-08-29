@@ -128,7 +128,7 @@
                     this._icon = value;
                     
                     if (this._icon >= 0 && !this._el_icon){
-                        this._el_icon = this._client.insertBefore(jsf.Dom.create('div'), this._client.firstChild);
+                        this._el_icon = this._client.insertBefore(jsf.Dom.create('div', null, "icon left"), this._client.firstChild);
                     }
                     
                     if (this._sprites){
@@ -146,7 +146,7 @@
                 set: function(value) {
                     this._iconMap = value;
                     if (!this._el_icon){
-                        this._el_icon = this._client.insertBefore(jsf.Dom.create('div'), this._client.firstChild);
+                        createIcon(this);
                     }
                 }
             },
@@ -163,76 +163,61 @@
                         this.updateDisplay();
                     }
                 }
+            },
+            
+            buttonStyle: {
+                type: "String",
+                get: function() {
+                    return this._buttonStyle;
+                },
+                set: function(value){
+                    this._buttonStyle = value;
+                    this._rules.custom = " " + value;
+                    this.updateDisplay();
+                }
+            },
+            
+            group: {
+                type: "String",
+                get: function() {
+                    return this._group;
+                },
+                set: function(value){
+                    this._group = value;
+                }
+            },
+            
+            selected: {
+                type: "Boolean",
+                get: function() {
+                    return this._selected;
+                },
+                set: function(value){
+                    this._selected = value;
+                    this.updateDisplay();
+                }
+            },
+            
+            togglet: {
+                type: "Boolean",
+                get: function() {
+                    return this._togglet;
+                },
+                set: function(value){
+                    this._togglet = value;
+                }
             }
         },
         
         _method: {
-            group: function(value) {
-                // get
-                if (value === undefined){
-                    return this._group;
-                }
-                
-                // set
-                this._group = value;
-                
-                return this;
-            },
-            
-            selected: function(value) {
-                // get
-                if (value === undefined) {
-                    return this._selected;
-                }
-                
-                // set
-                this._selected = value;
-                this.updateDisplay();
-                
-                return this;
-            },
-            
-            togglet: function(value) {
-                // get
-                if (value === undefined){
-                    return this._togglet;
-                }
-                
-                // set
-                this._togglet = value;
-                
-                return this;
-            },
-            
-            buttonStyle: function(value) {
-                // get
-                if (value === undefined){
-                    return this._buttonStyle;
-                }
-                
-                // set
-                this._buttonStyle= value;
-                
-                if (value){
-                    this._rules.canvas="f1 btn btn-"+value;
-                    this._rules.down="btn-down btn-"+value+"-down";
-                    this._rules.disabled="f4";
-                    this._rules.over="s1 btn-over btn-"+value+"-over";
-                }else{
-                    this._rules.canvas="f1 btn";
-                    this._rules.down="btn-down";
-                    this._rules.disabled="f4";
-                    this._rules.over="s1 btn-over";
-                }
-                
-                this.updateDisplay();
-                
-                return this;
-            },
-            
             render: function() {
-                var i, o, sprites, children;
-                return this;
+                var i, o, h, sprites, children;
+                
+                if (this._selected){
+                    this._mouseState.down = true;
+                    this._updateCssRule();
+                }
+                
                 // se faz parte de um grupo de botões e está selecionado, todos os outros ficam não selecinados
                 if (this._group && this._selected) {
                     children = this._parent.children();
@@ -240,24 +225,48 @@
                     for (i = 0; i < children.length; i++) {
                         o = children[i];
                         if (o instanceof jsf.ui.JButton && o._group == this._group && this._id != o._id) {// é JButton, faz parte do meu grupo e não sou eu
+                            o._mouseState.down = false;
                             o.selected(false);
                         }
                     }
                 }
                 
-                //this._canvas.className += " btn-icon-" + this._iconAlign;
-                //this._canvas.style.lineHeight = this._client.offsetHeight + 'px';
-                
-                // alinha o icone, se existir
-                sprites = this.getSprites();
-                if (sprites && (this._icon >= 0 || this._iconMap)) {
-                    alignIcon(
-                        this._el_icon,
-                        this._iconAlign, 
-                        this._iconMap ? 
-                            sprites.sprite(this._iconMap[this._enabled ? 0 : 1]) :
-                            sprites.sprite(this._icon, this._enabled ? 0 : 1)
-                    );
+                //define o ícone
+                if (this._el_icon){
+                    h = this._canvas.firstChild.offsetHeight;
+                    sprites = this.getSprites();
+                    
+                    if (sprites) {
+                        this._el_icon.setAttribute('class', 'icon ' +  sprites.sprite(this._iconMap[this._enabled ? 0 : 1]));
+                    }
+                    
+                    //centraliza o ícone verticalmente
+                    
+                    
+                    //posiciona o ícone
+                    switch (this._iconAlign){
+                        case 'left':
+                            this._el_icon.style.marginTop = ((h/2) - this._el_icon.offsetHeight/2) + 'px';
+                            this._canvas.firstChild.style.lineHeight = h + 'px';
+                            break;
+
+                        case 'top':
+                            this._el_icon.style.marginTop = '';
+                            this._el_icon.style.cssText = "position:relative; margin-left:-8px; display:block; left:50%; float:none";
+                            break;
+
+                        case 'right':
+                            this._el_icon.style.marginTop = ((h/2) - this._el_icon.offsetHeight/2) + 'px';
+                            this._canvas.firstChild.style.lineHeight = h + 'px';
+                            this._el_icon.style.float = 'right';
+                            break;
+
+                        case 'bottom':
+                            break;
+
+                        case 'center':
+                            break;
+                    }
                 }
                 
                 return this;
@@ -265,6 +274,19 @@
         }
     });
     
+    function createIcon(bt){
+        var c = bt.canvas();
+        
+        c.innerHTML = '<div style="position:relative;overflow:visible;width:100%;height:100%;vertical-align:middle;">'+
+                            '<div class="icon"></div>'+
+                            '<span></span>'+
+                      '</div>';
+        
+        bt._el_icon= c.firstChild.childNodes[0];
+        bt._client = c.firstChild.childNodes[1];
+        bt._client.innerHTML = bt._caption || "";
+    }
+
     function alignIcon(icon, align, cls){
         var p = icon.parentNode;
         

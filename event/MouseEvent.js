@@ -325,7 +325,7 @@ document.onselectstart = function() {
 
             if (!mOverElement && target) {
                 dispatchMouseOver(ui, target, evt);
-                mOverElement = evt.target;
+                mOverElement = target;
             }
 
             if (mOverUI != ui) { // entrou no DisplayObject (ui)

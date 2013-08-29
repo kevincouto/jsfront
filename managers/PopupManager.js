@@ -16,22 +16,22 @@ var PopupOnMouseDown;
                 return _zIndex;
             },
             /*  options = {
-             target    : DisplayObject, //componente a ser exibido como popup
-             container : JContainer,    //container do popup
-             shadow    : true|false,    //adiciona sombra
-             autohide  : true|false,    //se o popup deve desaparecer automaticamente ao clicar fora
-             modal     : true|false,    //se é modal ou não (se true, autohide será ignorado)
-             showEffect: Object,        //efeito de exibição
-             hideEffect: Object,        //efeito ao ocultar
-             onshow    : Function,      //função a ser chamada quando o popup for exibido (após animação)
-             onhide    : Function,      //função a ser chamada quando o popup for ocultado (após animação)
-             position  : {
-             x: 0, 
-             y: 0,
-             reference: "left|top|bottom|right"
-             owner: DisplayObject
-             }
-             } */
+                    target    : DisplayObject, //componente a ser exibido como popup
+                    container : JContainer,    //container do popup
+                    shadow    : true|false,    //adiciona sombra
+                    autohide  : true|false,    //se o popup deve desaparecer automaticamente ao clicar fora
+                    modal     : true|false,    //se é modal ou não (se true, autohide será ignorado)
+                    showEffect: Object,        //efeito de exibição
+                    hideEffect: Object,        //efeito ao ocultar
+                    onshow    : Function,      //função a ser chamada quando o popup for exibido (após animação)
+                    onhide    : Function,      //função a ser chamada quando o popup for ocultado (após animação)
+                    position  : {
+                       x: 0, 
+                       y: 0,
+                       reference: "left|top|bottom|right"
+                       owner: DisplayObject
+                    }
+                } */
             add: function(options) {
                 if (options && options.target) {
                     setTimeout(function() {
@@ -60,17 +60,17 @@ var PopupOnMouseDown;
                     jsf.Dom.remove(popup._canvas);
                     jsf.Dom.remove(popup._bg_);
 
+                    //chama o onhide do componente que foi oculto
                     if (popup._onhide) {
-                        popup._onhide();
+                        popup._onhide.call(popup);
                     }
-
-                    if (popup._popup_onhide) {
-                        popup._popup_onhide();
+                    
+                    if (options.onhide) {
+                        options.onhide.call(options.owner || popup, popup);                        
                     }
-
+                   
                     delete(_popups[popup._id]);
                     delete(_popups[popup._popup_id]);
-                    delete(popup._popup_onhide);
                     delete(popup._popup_id);
                     delete(popup._bg_);
 
@@ -216,11 +216,11 @@ var PopupOnMouseDown;
 
         // define a posição do popup
         if (options.position) {
-            if (options.owner) {
+            if (options.owner && options.position.x===undefined && options.position.y===undefined) {
                 jsf.Dom.positionByRect({
                     rect: jsf.Dom.rect(options.owner),
                     target: options.target,
-                    position: 'left|bottom right|top'
+                    position: options.position.reference || 'left|bottom right|top'
                 });
             } else {
                 jsf.util.Dom.style(options.target, {
@@ -237,19 +237,11 @@ var PopupOnMouseDown;
 
         //define a sombra
         if (options.shadow) {
-            jsf.Dom.addClass(canvas, 's2');
+            jsf.Dom.addClass(canvas, 'shadow');
         }
 
         if (options.autohide === undefined) {
             options.autohide = true;
-        }
-
-        if (options.onhide) {
-            ui._popup_onhide = options.onhide;
-        }
-
-        if (options.onshow) {
-            ui._popup_onshow = options.onshow;
         }
 
         if (!ui._parent) {
@@ -276,11 +268,6 @@ var PopupOnMouseDown;
         canvas.style.zIndex = (++_zIndex);
 
         _popups[ui._id] = options;
-
-        // aplica o efeito caso exista
-        if (options.hideEffect) {
-            ui._popup_hide_effect = options.hideEffect;
-        }
 
         showElement(canvas);
 

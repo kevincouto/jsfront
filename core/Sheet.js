@@ -139,16 +139,21 @@
                 return null;
             },
             getThemeRule: function() {
-                var i, s, config, sheet;
+                var i, s, config, sheet, b="";
 
                 if (!rulesDef) {
                     config = jsf.config();
                     sheet = jsf.Sheet.getSheet(config.THEME + '.css')
-                    rulesDef = {};
+                    rulesDef = {
+                        rulesObj:{},
+                        rulesStr:""
+                    };
 
                     for (i = 0; i < sheet.rules.length; i++) {
                         s = sheet.rules[i].selectorText.replace(".", "");
-                        rulesDef[s] = sheet.rules[i].cssText.replace(sheet.rules[i].selectorText,"");
+                        rulesDef.rulesObj[s] = sheet.rules[i].cssText.replace(sheet.rules[i].selectorText,"");
+                        rulesDef.rulesStr += (b+s);
+                        b="|";
                     }
                 }
 

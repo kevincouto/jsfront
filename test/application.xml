@@ -4,15 +4,7 @@
     <!-- <package name="custom" theme="false">libs/custom/</package> -->
 
     <import src="application.js" />
-    
     <import src="jsf.core.Alert" />
-    <import src="jsf.ui.JToolbar" />
-    <import src="jsf.ui.JMenubar" />
-    <import src="jsf.ui.JSeparator" />
-    <import src="jsf.ui.JButton" />
-    <import src="jsf.ui.JText" />
-    <import src="jsf.ui.JSplitButton" />
-    <import src="jsf.ui.JMenu" />
     
     <sprites name="icons" width="16" height="16" image="../themes/google/images/icons16.gif" />
     

@@ -956,14 +956,14 @@ window.onerror = function(event, file, line) {
 
                 /**
                  * Se p2 for definido, assume p1 como sendo um filtro de nó
-                 * @param p1 {Function|String} requerido. ex: each(node, "names name", function(n){});
+                 * @param p1 {Function|String} requerido. ex: each(node, "names name", function(n){}); se for vazio, navega em todas as tags
                  * @param p2 {Function} opcional
                  */
                 each: function(node, p1, p2){
                     var 
                         i, f, tag,
                         a = p2 ? p1.split(" ") : [p2];
-
+                    
                     if (a.length>1){
                         tag = a.pop();
                         node = jsf.XML.find(node, a.join(" "));
@@ -976,7 +976,10 @@ window.onerror = function(event, file, line) {
                     for (i=0; i<node.childNodes.length; i++){
                         if (node.childNodes[i].nodeType==1){
                             if (p2){
-                                if (p1==node.childNodes[i].localName){
+                                if (p1==""){
+                                    f(node.childNodes[i]);
+                                    jsf.XML.each(node.childNodes[i], "", f);
+                                }else if (p1==node.childNodes[i].localName){
                                     f(node.childNodes[i]);
                                 }
                             }else{
@@ -1206,6 +1209,17 @@ window.onerror = function(event, file, line) {
         jsf.XML.each(xml, "import", function(node){
             jsf.require(node.getAttribute("src"));
         });
+        
+        //carrega o que estiver definido nas tags com referência em TAG_MAP
+        if (window.TAG_MAP){
+            jsf.XML.each(xml, "", function(node){
+                var m = TAG_MAP[node.localName];
+                
+                if (m){
+                    jsf.require(m);
+                }
+            });
+        }
         
         //aguarda carregar tudo
         ready(function() {

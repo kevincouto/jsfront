@@ -82,11 +82,11 @@
             </panel>
             <splitter align="right"/>
             <panel caption="Painel Cliente" align="client">
-                <container border="true" top="4" bottom="4" left="4" width="310">
-                    <label top="3" left="4"><caption><![CDATA[<b style="font-size:14px">Form Elements</b>]]></caption></label>
-                    <formitem top="30" caption="Nome:"><textbox /></formitem>
-                    <formitem top="60" caption="Endereço:"><textbox /></formitem>
-                    <formitem top="90" caption="Telefone Residencial:"><textbox /><textbox /></formitem>
+                <container border="true" top="4" bottom="4" left="4" width="314" layout="vertical" grap="4" flex="1">
+                    <label><caption><![CDATA[<div style="font-size:14px;padding:4px;font-weight:bold">Form Container</div>]]></caption></label>
+                    <formitem caption="Nome:"><textbox /></formitem>
+                    <formitem caption="Endereço:"><textbox /></formitem>
+                    <formitem caption="Telefone Residencial:"><textbox /><textbox /></formitem>
                 </container>
             </panel>
             <container height="120" align="bottom" border="true"></container>

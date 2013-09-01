@@ -102,6 +102,6 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 
 .formitem{background:transparent}
 .formitem_client{display: table-row;}
-.formitem_caption{display: table-cell; white-space:nowrap; font-weight:bold}
+.formitem_caption{display: table-cell; white-space:nowrap; font-weight:bold; text-align:right}
 .formitem_subcaption{padding-left:4px; padding-right:4px}
 .formitem .display{display: table-cell; margin-bottom: 2px;}

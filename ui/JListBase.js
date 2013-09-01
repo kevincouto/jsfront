@@ -12,8 +12,7 @@
 
             jsf.Display.call(this);
 
-            //this._canvas.className = 'lst ui-bd';
-            this._canvas.innerHTML = '<div><div></div></div>';
+            this._canvas.innerHTML = '<div class="client"><div class="data"></div></div>';
             this._client = this._canvas.firstChild;
             this._el_data = this._client.firstChild;
 
@@ -50,12 +49,22 @@
             },
             mousewheel: function(delta) {
                 this._vs._onmousewheel(delta);
+            },
+            resize: function(){
+                this._clientHeight = this._client.offsetHeight;
+
+                this._vs.scrollSize(this._dataProviderHeight);
+                this._vs.canvasSize(this._client.offsetHeight);
+                this._vs._onresize();
+                this._vs.render();
+
+                this._updateList();
             }
         },
         
         _protected: {
             updateList: function() {
-                var row, cls = "", i = 0, y, h, r, e;
+                var row, i = 0, y, h, r, e;
 
                 this._el_data.style.display = "none";
 
@@ -121,14 +130,7 @@
                 
         _method: {
             render: function() {
-                this._clientHeight = this._client.offsetHeight;
-
-                this._vs.scrollSize(this._dataProviderHeight);
-                this._vs.canvasSize(this._client.offsetHeight);
-                this._vs._onresize();
-                this._vs.render();
-
-                this._updateList();
+                
             }
         }
     });

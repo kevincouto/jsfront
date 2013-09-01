@@ -1,6 +1,16 @@
 "use strict";
 
 App = {
+    onCreationComplete: function(){
+        var i, dp=[];
+        
+        for (i=0; i<100; i++){
+            dp.push({label:"item " + i});
+        }
+        
+        this.lstEsquerda.dataProvider(dp);
+    },
+    
     actionNewProject: function(sender, evt){
         jsf.Alert.show("msgbox ok");
     },

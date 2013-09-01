@@ -1,15 +1,6 @@
 "use strict";
 
 (function(){
-    var rowHeight = jsf.getContentRule(".jlist-item-height"),
-        cls = jsf.getContentRule(".jlist-class" ),
-        cBorder1 = cls[0] || "b1",
-        cItem1 = " " + (cls[1] || "i1"),
-        cItem2 = " " + (cls[2] || "i2"),
-        cItem3 = (cls[3] || "i3") + " lst-item-over";
-    
-    rowHeight = rowHeight[0] || 26;
-    
     define("jsf.ui.JList", {
         _require: ["jsf.ui.JListBase"],
         _extend: "listbase",
@@ -20,13 +11,9 @@
 
             this._focuset = true;
 
-            this._canvas.className = "lst " + cBorder1;
-            this._client.className = "lst-client";
-            this._el_data.className = "lst-data";
-
             //default properties
             this._listField = 'label';
-            this._rowHeight = rowHeight;
+            this._rowHeight = 30;
             this._border = true;
             this._styleClass = "";
 
@@ -36,7 +23,6 @@
             mousedown: function(element, evt) {
                 if (element._captureMouseEvent && this._selectedIndex != element.itemIndex) {
                     setItemSelected(this, element.itemIndex);
-                    this.render();
                 }
             },
             mouseup: function(element) {
@@ -51,27 +37,26 @@
                     item = this._dataProvider[element.itemIndex];
                     if (!item._sel_) {
                         this._elOver = element;
-                        jsf.Dom.addClass(element, cItem3);
+                        jsf.Dom.addClass(element, "over");
                     }
                 }
             },
             mouseout: function(element) {
                 if (this._elOver) {
-                    jsf.Dom.removeClass(this._elOver, cItem3);
+                    jsf.Dom.removeClass(this._elOver, "over");
                 }
             }
         },
         
         _protected: {
             renderItem: function(item, element, elementIndex){
-                var cls = "lst-item";
+                var cls = "item";
                 
                 if ( item.selectable!==false ){
-                    cls += item._sel_ ? (this._hasFocus ? cItem1 : cItem2) : '';
-                    //cls = item._sel_ ? 'lst-item '+(this._hasFocus?'-focus':'')+' lst-item-selected' : 'lst-item';
+                    cls += item._sel_ ? (this._hasFocus ? " selected focus" : " selected") : '';
                 }
                 
-                element.className = cls + (item.style ? " lst-" + item.style : this._styleClass);
+                element.className = cls + (item.style ? " " + item.style : this._styleClass);
                 
                 //adiciona o conteúdo da linha
                 if (this._itemRender){  //itemRender
@@ -191,8 +176,6 @@
                 this._dataProviderChanged = true;
                 setItemSelected(this, index);
 
-                this.updateDisplay();
-
                 return index;
             },
             sort: function(field, direction) {
@@ -263,7 +246,6 @@
 
                 //set
                 setItemSelected(this, value);
-                this.updateDisplay();
 
                 return this;
             },
@@ -313,6 +295,8 @@
 
             lst.dispatch(jsf.Event.ON_CHANGE, lst._selectedItem);
         }
+        
+        lst._updateList();
     }
     
 }());

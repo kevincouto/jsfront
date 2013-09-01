@@ -10,16 +10,11 @@
             
             jsf.Display.call(this);
             
-            //regras css
-            this._rules = {
-                vertical: "jspt jspt-vertical",
-                horizontal: "jspt jspt-horizontal"
-            };
-            
-            this._canvas.className = this._rules.vertical;
+            this._rules.custom = " vertical";
+            this._canvas.className = this._rules.canvas + " vertical";
             
             //htmlElements
-            this._canvas.innerHTML = '<div class="jspt-icon"></div>';
+            this._canvas.innerHTML = '<div class="icon"></div>';
             this._icon = this._canvas.firstChild;
             
             //defaults
@@ -106,7 +101,8 @@
                         this._canvas.style.height = null;
                     }
                     
-                    this._canvas.className = vertical ? this._rules.vertical : this._rules.horizontal;
+                    this._rules.custom = vertical ? " vertical" : " horizontal";
+                    this._canvas.className = this._rules.canvas + this._rules.custom;
                     this._cursor = vertical ? 'col-resize' : 'row-resize';
                     
                     this._updateParentDisplay();

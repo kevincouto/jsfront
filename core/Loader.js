@@ -49,7 +49,8 @@ window.onerror = function(event, file, line) {
         _readyCallbacksId = 0,
         _readyCallbacks = {},
         _readyCallbacksTime,
-        waitForDependenciesTimer;
+        waitForDependenciesTimer,
+        auto_load={};
 
     function Array_compareAsc(a, b) {
         if (a[window.att] < b[window.att]) {
@@ -795,10 +796,10 @@ window.onerror = function(event, file, line) {
         ns[s] = Base;
 
         //define algumas propriedades estáticas que serão usadas principalmente no modo designer
-        Base._CLASS_ = cls;
-        Base._EXTENDS_ = obj._extend;
-        Base._TAG_ = obj._tag || obj._xtype;
-        Base._XTYPE_ = obj._xtype;
+        Base._CLASS_      = cls;
+        Base._EXTENDS_    = obj._extend;
+        Base._TAG_        = obj._tag || obj._xtype;
+        Base._XTYPE_      = obj._xtype;
         Base._PROPERTIES_ = properties;
 
         //registra a classe
@@ -1078,7 +1079,7 @@ window.onerror = function(event, file, line) {
                 opacity: {from:0, to:1, duration:'0.3s', timing:'ease-in'}
             },
             complete: function(){
-                app.onShow();
+                app.dispatch("onshow");
             }
         });
         
@@ -1207,19 +1208,26 @@ window.onerror = function(event, file, line) {
         
         //carrega os imports definido no xml
         jsf.XML.each(xml, "import", function(node){
-            jsf.require(node.getAttribute("src"));
+            var 
+                src = node.getAttribute("src"),
+                aul = node.getAttribute("autoload");
+             
+            if (aul){
+                auto_load[aul] = src;
+            }else if (src){
+                jsf.require(node.getAttribute("src"));
+            }
         });
         
-        //carrega o que estiver definido nas tags com referência em TAG_MAP
-        if (window.TAG_MAP){
-            jsf.XML.each(xml, "", function(node){
-                var m = TAG_MAP[node.localName];
-                
-                if (m){
-                    jsf.require(m);
-                }
-            });
-        }
+        //carrega o que estiver definido como autoload
+        jsf.XML.each(xml, "", function(node){
+            var m = auto_load[node.localName];
+
+            if (m){
+                jsf.require(m);
+            }
+        });
+        
         
         //aguarda carregar tudo
         ready(function() {

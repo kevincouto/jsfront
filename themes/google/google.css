@@ -14,8 +14,8 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .application{position:absolute; top:0; left:0; width:100%; height:100%;}
 
 .toolbar{background:#f5f5f5; border-bottom-style:solid; height:44px; display:table-cell; vertical-align:middle;}
-.toolbar .display{float:left; margin-left:2px;}
-.toolbar .separator{width:1px; height:20px; background:#c6c6c6; margin-left:6px; margin-right:6px;}
+.toolbar > .display{float:left; margin-left:2px;}
+.toolbar > .separator{width:1px; height:20px; background:#c6c6c6; margin-left:6px; margin-right:6px;}
 
 .menubar{border-bottom-style:solid; height:35px; margin:0 44px 0 44px;}
 .menubar .item {position:relative; display:inline-block; margin:2px 0 0 2px; border:1px solid transparent; overflow:visible;}
@@ -60,3 +60,48 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .menuitem.disabled {cursor:default; color:#ccc}
 .menuitem.disabled:hover{background:#fff}
 .menuitem.disabled *{cursor:default}
+
+.panel{width:200px; height:200px; padding:30px 0 0 0; border-style:solid;}
+.panel > .client{position:relative; width:100%; height:100%; background:#fff;}
+.panel > .title{position:relative; background:#f5f5f5; height:30px; margin-top:-30px; line-height:30px; white-space:nowrap;}
+.panel > .title .icon{display:inline-block;margin-right: 10px}
+.panel > .title .caption{display:inline-block; font-weight:bold}
+.panel > .title .pbutton{position:absolute; top:0; right:0; width:10px; height:30px; background:#f5f5f5;}
+
+.splitter {background:#fff}
+.splitter.vertical{width:6px; cursor:col-resize}
+.splitter.vertical .icon{background:url(images/icons16.gif) -38px 0; position:relative; width:4px; height:16px; top:50%; margin-top:-8px; left:1px;}
+.splitter.horizontal{height:6px; cursor:row-resize}
+.splitter.horizontal .icon{background:url(images/icons16.gif) -48px -6px; position:relative; width:16px; height:4px; left:50%; margin-left:-8px; top:1px;}
+
+.listbase .client{position:relative; width:100%; height:100%;}
+
+.list{padding:2px; background:#fff; border-style:solid}
+.list .data {left:0; right:0; overflow:hidden; position:absolute}
+.list .item {position:relative; width:100%; padding-left:5px; white-space:nowrap;}
+.list .item.over{background:#f5f5f5}
+.list .item.selected{background:#88C1FF; color:#fff}
+.list .disabled {background:#f0f0f0; border-color:#dbdbdb; color:#999; text-shadow:#fff 0 1px 0;}
+
+.scrollbar {background-color:rgba(230, 230, 230, 0.55); min-width:7px; min-height:7px; position:absolute;}
+.scrollbar * {position:absolute}
+.scrollbar .minus, .scrollbar .plus {width:7px; height:7px; display:none;}
+.scrollbar .face {top:0; left:0; width:7px; height:7px; background-color:#8f8f8f;}
+.scrollbar.vertical .track {top:0; left:0; width:7px; bottom:0px;}
+.scrollbar.vertical .minus {bottom:7px; background:url(images/icons16.gif) -21px -5px;}
+.scrollbar.vertical .plus  {bottom:0; background:url(images/icons16.gif) -5px -5px;}
+.scrollbar.vertical .hidebt {bottom:0;}
+.scrollbar.horizontal .track {top:0; left:0; height:7px; right:0px;}
+.scrollbar.horizontal .minus {right:7px; background:red;}
+.scrollbar.horizontal .plus  {right:0; background:blue;}
+.scrollbar.horizontal .hidebt {right:0;}
+.scrollbar.touch {background:transparent;}
+.scrollbar.touch .face {background:#6c6c6c; opacity:0.7;}
+
+.label {background:transparent}
+
+.formitem{background:transparent}
+.formitem_client{display: table-row;}
+.formitem_caption{display: table-cell; white-space:nowrap; font-weight:bold}
+.formitem_subcaption{padding-left:4px; padding-right:4px}
+.formitem .display{display: table-cell; margin-bottom: 2px;}

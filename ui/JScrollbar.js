@@ -7,6 +7,7 @@
         _require: ["jsf.managers.DragManager", "jsf.ui.DisplayObject"],
         _extend: "display",
         _alias: "jsf.JScrollbar",
+        _xtype: "scrollbar",
         
         _constructor: function(properties) {
             jsf.Display.call(this);
@@ -24,18 +25,20 @@
             this._invalidateDisplay = true;
 
             // template
-            this._canvas.innerHTML = '<div class="scb-minus"></div>'
-                    + '<div class="scb-track">'
-                    + '<div class="scb-face"></div>'
+            this._canvas.innerHTML = 
+                      '<div class="minus"></div>'
+                    + '<div class="track">'
+                    +     '<div class="face"></div>'
                     + '</div>'
-                    + '<div class="scb-plus"></div>';
-
-            this._canvas.className = 'scb scb-v';
-
+                    + '<div class="plus"></div>';
+            
+            this._rules.custom = " vertical";
+            this._canvas.className = this._rules.canvas + " vertical";
+            
             this._el_minus = this._canvas.childNodes[0];
             this._el_track = this._canvas.childNodes[1];
-            this._el_face = this._el_track.childNodes[0];
-            this._el_plus = this._canvas.childNodes[2];
+            this._el_face  = this._el_track.childNodes[0];
+            this._el_plus  = this._canvas.childNodes[2];
 
             this._el_minus._captureMouseEvent = this._el_track._captureMouseEvent = this._el_face._captureMouseEvent = this._el_plus._captureMouseEvent = true;
 
@@ -147,6 +150,23 @@
                 }
             }
         },
+        _property: {
+            orientation: {
+                type:"String",
+                get: function() {
+                    return this._orientation;
+                },
+                set: function(value){
+                    this._orientation = value;
+
+                    this._rules.custom = value == 'v' ? " vertical" : " horizontal";
+                    this._canvas.className = this._rules.canvas + this._rules.custom;
+                    //this._canvas.setAttribute('class', 'scb ' + (value == 'v' ? 'scb-v' : 'scb-h') + (jsf.isTouchDevice ? " scb-touch" : ""));
+
+                    this.updateDisplay();
+                }
+            }
+        },
         _public: {
             parentComponent: function(value) {
                 //get
@@ -156,21 +176,6 @@
 
                 // set
                 this._parentComponentId = value._id;
-
-                return this;
-            },
-            orientation: function(value) {
-                //get
-                if (value === undefined) {
-                    return this._orientation;
-                }
-
-                // set
-                this._orientation = value;
-
-                this._canvas.setAttribute('class', 'scb ' + (value == 'v' ? 'scb-v' : 'scb-h') + (jsf.isTouchDevice ? " scb-touch" : ""));
-
-                this.updateDisplay();
 
                 return this;
             },

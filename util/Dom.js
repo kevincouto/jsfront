@@ -1,7 +1,8 @@
 "use strict";
 
 (function() {
-
+    var textMetricsElement;
+    
 //private functions:
     function _adjustTop(t, e, r) {
         if ((t + e.offsetHeight) > System.height()) {
@@ -499,6 +500,20 @@
                 }
 
                 return r;
+            },
+            textMetrics: function(text, cssText, className){
+                if (!textMetricsElement){
+                    textMetricsElement = document.body.appendChild(jsf.util.Dom.create('span', 'position:absolute; top:10000px; left:0;'));
+                }
+                
+                textMetricsElement.style.cssText = cssText || "";
+                textMetricsElement.className = className || "";
+                textMetricsElement.innerHTML = text;
+                
+                return {
+                    width:  textMetricsElement.offsetWidth,
+                    height: textMetricsElement.offsetHeight
+                }
             }
         }
     });

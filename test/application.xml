@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application SYSTEM "../doc/jsfront.dtd">
-<application name="App" version="1.0" theme="google">
+<application name="App" version="1.0" theme="google" onCreationComplete="onCreationComplete">
     <!-- <package name="custom" theme="false">libs/custom/</package> -->
 
     <import src="application.js" />
+    
     <import src="jsf.core.Alert" />
+    <import src="jsf.ui.JToolbar"     autoload="toolbar" />
+    <import src="jsf.ui.JMenubar"     autoload="menubar" />
+    <import src="jsf.ui.JSeparator"   autoload="separator" />
+    <import src="jsf.ui.JButton"      autoload="button" />
+    <import src="jsf.ui.JText"        autoload="textbox" />
+    <import src="jsf.ui.JSplitButton" autoload="splitbutton" />
+    <import src="jsf.ui.JMenu"        autoload="menu" />
+    <import src="jsf.ui.JPanel"       autoload="panel" />
+    <import src="jsf.ui.JSplitter"    autoload="splitter" />
+    <import src="jsf.ui.JList"        autoload="list" />
+    <import src="jsf.ui.JLabel"       autoload="label" />
+    <import src="jsf.ui.JFormItem"    autoload="formitem" />
     
     <sprites name="icons" width="16" height="16" image="../themes/google/images/icons16.gif" />
     
-    <!-- INTERFACE -->
+    <!-- MENUS -->
     <menu name="menuArquivo" caption="Arquivo">
         <itens>
             <item label="Compartilhar" enabled="false" />
@@ -38,8 +51,8 @@
         </itens>
     </menu>
     
+    <!-- INTERFACE -->
     <menubar itens='["menuArquivo","menuEditar"]' />
-        
     <toolbar caption="Button" top="10" left="10">
         <button caption="Normal" width="100"/>
         <separator />
@@ -58,6 +71,28 @@
         <splitbutton buttonStyle="flat" popup="menuArquivo" />
         <splitbutton />
     </toolbar>
+    <container align="client" grap="4">
+        <panel caption="Painel Esquerdo" align="left" grap="4">
+            <list name="lstEsquerda" align="client" />
+        </panel>
+        <splitter margin="-4"/>
+        <container align="client">
+            <panel caption="Painel Direito" align="right">
+                
+            </panel>
+            <splitter align="right"/>
+            <panel caption="Painel Cliente" align="client">
+                <container border="true" top="4" bottom="4" left="4" width="310">
+                    <label top="3" left="4"><caption><![CDATA[<b style="font-size:14px">Form Elements</b>]]></caption></label>
+                    <formitem top="30" caption="Nome:"><textbox /></formitem>
+                    <formitem top="60" caption="Endereço:"><textbox /></formitem>
+                    <formitem top="90" caption="Telefone Residencial:"><textbox /><textbox /></formitem>
+                </container>
+            </panel>
+            <container height="120" align="bottom" border="true"></container>
+            <splitter align="bottom"/>
+        </container>
+    </container>
     
 </application>    
     

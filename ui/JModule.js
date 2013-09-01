@@ -80,7 +80,7 @@
                 delete(this._bindableChildren);
 
                 //chama o método indicando que a criação dos componentes foi completada
-                this.onCreationComplete();
+                this.dispatch("oncreationcomplete");
                 this._creationComplete = true;
 
                 //remove o json da definição temporária e o método create pq este não pode mais ser chamado
@@ -95,10 +95,7 @@
                 }
 
                 return this;
-            },
-            onInitialize: jsf.EMPTY_FUNCTION, //os componentes ainda não existem
-            onCreationComplete: jsf.EMPTY_FUNCTION, //os componentes já existem mais a aplicação ainda não é visível
-            onShow: jsf.EMPTY_FUNCTION  //os componentes já existem e a aplicação está visível
+            }
         }
     });
     
@@ -234,13 +231,7 @@
 
         mod._def_ = def;
 
-        if (def.onInitialize) {
-            def.onInitialize.call(mod);
-            delete(def.onInitialize);
-        }
-
-        mod.onShow = def.onShow || jsf.EMPTY_FUNCTION;
-        mod.onCreationComplete = def.onCreationComplete || jsf.EMPTY_FUNCTION;
+        mod.dispath("oninitialize");
 
         if (jsf.isString(name)) {
             window[name] = mod;

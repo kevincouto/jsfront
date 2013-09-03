@@ -137,3 +137,19 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .combobox.disabled {opacity:0.4; cursor:default;}
 .combobox.focus{box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1); border-color:#4D90FE;}
 
+.calendar {width:220px; height:193px; border-style:solid}
+.calendar .head   {height:26px; border-bottom:solid 1px #e5e5e5; width:100%; }
+.calendar .week   {height:18px; width:100%; position:relative; padding-left:18px; background:#fff; border-bottom: solid 1px #E9E9E9;}
+.calendar .days   {background:#fff; height:126px; padding-top:1px;}
+.calendar .footer {height:19px; border-top:solid 1px #e5e5e5; width:100%;  text-align:center; line-height:19px;}
+.calendar .lbutton{position:absolute; top:5px; left:3px; height:16px; width:16px; background:url(images/icons16.gif) 0 -80px;}
+.calendar .rbutton{position:absolute; top:5px; right:2px;height:16px; width:16px; background:url(images/icons16.gif) 0 -48px;}
+.calendar .month  {position:absolute; left:21px; height:26px; line-height:26px; text-align:center; width:177px;}
+.calendar .day{float:left; border:solid 1px transparent; width:20px; height:18px; line-height:18px; margin-right:5px; text-align:center;}
+.calendar .week .day{height:17px; line-height:17px; border-color:transparent; font-weight:bold}
+.calendar .row{height:20px; margin-bottom:1px; padding-left:18px;}
+.calendar .row .now{color:#000; font-weight:bold;}
+.calendar .row .active{font-weight:bold; background:rgb(250, 250, 250); border-color:rgb(180, 180, 180); color:#000;}
+.calendar .row .deactive{color:#BDBDBD}
+.calendar .d0{color:#dd4b39}
+.calendar .d6{color:#4d90f0}

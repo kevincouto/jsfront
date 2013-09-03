@@ -182,7 +182,7 @@ window.onerror = function(event, file, line) {
 
         ns = splitNamespace(cls);
 
-        r = Boolean(window[ns.className]);
+        r = Boolean(window[ns.className]) && _scripts[cls]=="complete";
 
         if (!r) {
             n = _defs.names[cls];
@@ -292,12 +292,6 @@ window.onerror = function(event, file, line) {
             jsf.run({});
         }
         
-        //inicio teste
-        if (cls=='JIDE.custom.JSelector' ){
-            //console.log(cls);
-        }
-        //fim teste
-        
         o = prepareUrl(cls);
         
         //se o script já existe, elemento <script id="ds_xxx" ...
@@ -340,7 +334,7 @@ window.onerror = function(event, file, line) {
                 }
             }
 
-            delete(_scripts[cls]);
+            _scripts[cls]="complete";
 
             cls = null;
             callback = null;
@@ -355,7 +349,7 @@ window.onerror = function(event, file, line) {
                     classCreationComplete(n, s);
                 }
             }
-
+            
             this.onScriptComplete("success");
         };
 
@@ -654,6 +648,7 @@ window.onerror = function(event, file, line) {
 
         if (obj._require) {
             jsf.isArray(obj._require) ? d = obj._require : d.push(obj._require);
+            jsf.require(d);
         }
 
         /*if (obj._extend){

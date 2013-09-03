@@ -21,6 +21,7 @@
     <import src="jsf.ui.JCheck"       autoload="checkbox" />
     <import src="jsf.ui.JOption"      autoload="optionbox" />
     <import src="jsf.ui.JCombo"       autoload="combobox" />
+    <import src="jsf.ui.JCalendar"    autoload="calendar" />
     
     <sprites name="icons" width="16" height="16" image="../themes/google/images/icons16.gif" />
     
@@ -93,6 +94,7 @@
                     <formitem caption="Combobox:"><combobox name="combo1" caption="Combobox1" /></formitem>
                     <formitem caption="Option:"><optionbox caption="Option 01"/><optionbox caption="Option 02"/></formitem>
                 </container>
+                <calendar left="322" top="4" />
             </panel>
             <container height="40" align="bottom" border="true"></container>
             <splitter align="bottom"/>

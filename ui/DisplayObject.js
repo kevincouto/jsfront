@@ -48,6 +48,7 @@
         _event: {
             enter     : function(){return false;},
             exit      : function(){return false;},
+            focusex   : jsf.EMPTY_FUNCTION,
             invalidate: jsf.EMPTY_FUNCTION,
             keydown   : jsf.EMPTY_FUNCTION,
             keyup     : jsf.EMPTY_FUNCTION,

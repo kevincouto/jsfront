@@ -27,6 +27,9 @@
                 this.dispatch(jsf.event.Event.ON_EDIT_END, evt);
                 return false;
             },
+            focusex: function(){
+                this._canvas.focus();                
+            },
             keypress: function(evt) {
                 if (evt.keyCode == jsf.Keyboard.KEY_ENTER) {
                     this.dispatch(jsf.Event.ON_EDIT_END, evt);

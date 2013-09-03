@@ -35,7 +35,7 @@
             ui = jsf.FocusManager.getNextFocusManagerComponent();
             if (ui) {
                 jsf.FocusManager.activeFocus(ui);
-                console.log(ui.id());
+                //console.log(ui.id());
             }
             jsf.Event.stopPropagation(event);
             return false;

@@ -136,14 +136,18 @@
                 }
                 
                 //set
-                if ( canReceiveFocus(component) && (component !== active)){
-                    if (active){
-                        exitFocus(active);
+                if ( null!== component && canReceiveFocus(component)){
+                    if ((component !== active)){
+                        if (active){
+                            exitFocus(active);
+                        }
+
+                        active = component;
+
+                        enterFocus(active);
+                    }else{
+                        setTimeout(function(){active._onfocusex();},1);                        
                     }
-                    
-                    active = component;
-                    
-                    enterFocus(active);
                     
                     return active;
                 }

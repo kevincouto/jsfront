@@ -9,6 +9,7 @@ App = {
         }
         
         this.lstEsquerda.dataProvider(dp);
+        this.combo1.dataProvider( jsf.Util.clone(dp) );
     },
     
     actionNewProject: function(sender, evt){

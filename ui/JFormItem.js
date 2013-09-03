@@ -11,10 +11,17 @@
             jsf.ui.JContainer.call(this);
             
             this._itensMaxWidth = 0;
-            this._canvas.innerHTML = '<div class="formitem_client"><div class="formitem_caption"></div></div>';
-            this._client = this._canvas.firstChild;
-            this._caption_el = this._client.childNodes[0];
-
+            this._canvas.innerHTML = 
+                    '<table border="0" cellpadding="0" cellspacing="0">' +
+                        '<tr><td class="formitem_caption" valign="top">'+
+                        '</td><td>'+
+                            '<div class="formitem_client"></div>'+
+                        '</tr>'+
+                    '</table>';
+            
+            this._caption_el = this._canvas.firstChild.rows[0].cells[0];
+            this._client     = this._canvas.firstChild.rows[0].cells[1].firstChild;
+            
             this._applyProperties(properties);
         },
         _event: {

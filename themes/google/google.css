@@ -101,7 +101,39 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .label {background:transparent}
 
 .formitem{background:transparent}
-.formitem_client{display: table-row;}
-.formitem_caption{display: table-cell; white-space:nowrap; font-weight:bold; text-align:right}
+.formitem_client{position:relative;}
+.formitem_caption{white-space:nowrap; font-weight:bold; text-align:right}
 .formitem_subcaption{padding-left:4px; padding-right:4px}
-.formitem .display{display: table-cell; margin-bottom: 2px;}
+.formitem .display{display:inline-block; float:left; margin-bottom: 2px;}
+
+.checkbox {display:table-row; background:transparent;}
+.checkbox .client{position:relative;}
+.checkbox .icon {position:absolute; overflow:visible; top:1px; height:13px; width:13px; border:solid 1px #c6c6c6}
+.checkbox .caption {display:table-cell; padding-left:22px;}
+.checkbox.checked .icon div {position:absolute; top:1px; left:1px; width:13px; height:11px; background:url(images/icons16.gif) -2px -18px;}
+.checkbox.mouseover {color:#000;}
+.checkbox.mouseover .icon {box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);}
+.checkbox.focus .icon{border-color:#4D90FE;}
+.checkbox.disabled {color:#c0c0c0;}
+.checkbox.disabled .icon {background:#f7f7f7;}
+
+.optionbox {display:table-row; background:transparent;}
+.optionbox .client{position:relative;}
+.optionbox .icon {position:absolute; overflow:visible; top:1px; height:13px; width:13px; border:solid 1px #c6c6c6; border-radius:50%;}
+.optionbox .caption {display:table-cell; padding-left:22px;}
+.optionbox.checked .icon div {position:absolute; top:3px; left:3px; width:7px; height:7px; background:rgb(111, 111, 111); border-radius:50%;}
+.optionbox.mouseover {color:#000;}
+.optionbox.mouseover .icon {box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);}
+.optionbox.focus .icon{border-color:#4D90FE;}
+.optionbox.disabled {color:#c0c0c0;}
+.optionbox.disabled .icon {background:#f7f7f7;}
+
+.combobox{background-image: -webkit-linear-gradient(top,#f8f8f8,#ececec); border:1px solid #c6c6c6; padding:2px; width:100px; height:24px; border-radius:2px; cursor:pointer; font-weight:bold; font-size:11px;}
+.combobox .client{padding-left:6px;}
+.combobox .arrow {position:absolute; top:0; bottom:0; right:8px; width:7px}
+.combobox .arrow div{width:5px; height:3px; background:url(images/icons16.gif) -5px -4px no-repeat; position:absolute; top:50%; margin-top:-2px; left:1px;}
+.combobox.mouseover{background-image:-webkit-linear-gradient(top,#ffffff,#ececec); border-color:#BDBDBD;}
+.combobox.mousedown{background-image:-webkit-linear-gradient(top,#eee,#e0e0e0); border-color:#ccc; box-shadow:inset 0 1px 2px rgba(0,0,0,.1);}
+.combobox.disabled {opacity:0.4; cursor:default;}
+.combobox.focus{box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1); border-color:#4D90FE;}
+

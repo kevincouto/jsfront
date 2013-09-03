@@ -225,7 +225,7 @@ document.onselectstart = function() {
     }
 
     function onMouseDown(nativeEvent) {
-        var target, evt, element;
+        var target, evt, element, fe;
         
         jsf.ui.DisplayObject.dragOverTarget = null;
         
@@ -248,8 +248,12 @@ document.onselectstart = function() {
             element = target || (mOverElement || mdTarget._canvas);
             
             mouseEventDispatcher(mdTarget, element, jsf.event.MouseEvent.MOUSE_DOWN, evt);
-            jsf.FocusManager.activeFocus(mdTarget);
-
+            fe = jsf.FocusManager.activeFocus(mdTarget);
+            
+            if (!fe){
+                jsf.FocusManager.activeFocus( jsf.FocusManager.activeFocus() );
+            }
+            
             if (evt.mouseButton == jsf.MouseEvent.MB_RIGHT) {
                 mouseEventDispatcher(mdTarget, element, jsf.event.MouseEvent.CONTEXT, evt);
             }

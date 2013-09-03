@@ -18,6 +18,9 @@
     <import src="jsf.ui.JList"        autoload="list" />
     <import src="jsf.ui.JLabel"       autoload="label" />
     <import src="jsf.ui.JFormItem"    autoload="formitem" />
+    <import src="jsf.ui.JCheck"       autoload="checkbox" />
+    <import src="jsf.ui.JOption"      autoload="optionbox" />
+    <import src="jsf.ui.JCombo"       autoload="combobox" />
     
     <sprites name="icons" width="16" height="16" image="../themes/google/images/icons16.gif" />
     
@@ -85,11 +88,13 @@
                 <container border="true" top="4" bottom="4" left="4" width="314" layout="vertical" grap="4" flex="1">
                     <label><caption><![CDATA[<div style="font-size:14px;padding:4px;font-weight:bold">Form Container</div>]]></caption></label>
                     <formitem caption="Nome:"><textbox /></formitem>
-                    <formitem caption="Endereço:"><textbox /></formitem>
+                    <formitem caption="Opções:"><checkbox checked="true" caption="Tipo 1" /><checkbox checked="true" caption="Tipo 2" /></formitem>
                     <formitem caption="Telefone Residencial:"><textbox /><textbox /></formitem>
+                    <formitem caption="Combobox:"><combobox name="combo1" caption="Combobox1" /></formitem>
+                    <formitem caption="Option:"><optionbox caption="Option 01"/><optionbox caption="Option 02"/></formitem>
                 </container>
             </panel>
-            <container height="120" align="bottom" border="true"></container>
+            <container height="40" align="bottom" border="true"></container>
             <splitter align="bottom"/>
         </container>
     </container>

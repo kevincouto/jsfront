@@ -2,11 +2,10 @@ body {overflow: hidden;}
 input {-moz-user-select: text;}
 input:focus,textarea:focus {outline: none;}
 body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
-div{box-sizing: border-box;}
 
 .shadow{box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
 
-.display {display:block; user-select:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:-moz-none; -o-user-select:none; overflow:hidden; cursor:default; padding:0; margin:0; outline:none; border-color:#e5e5e5; border-width:1px; background:#f5f5f5; color:#666;}
+.display {display:block; user-select:none; box-sizing:border-box; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:-moz-none; -o-user-select:none; overflow:hidden; cursor:default; padding:0; margin:0; outline:none; border-color:#e5e5e5; border-width:1px; background:#f5f5f5; color:#666;}
 
 .container{background:#fff;}
 
@@ -167,9 +166,9 @@ div{box-sizing: border-box;}
 .colorselector .apply{position:absolute; top:4px; left:215px; text-decoration:underline; overflow:visible; color:#4d90f0; cursor:pointer;}
 .colorselector .transparent{position:absolute; top:124px; left:215px; text-decoration:underline; overflow:visible; color:#4d90f0; cursor:pointer;}
 .colorselector .mask0 {position:absolute; left:5px; top:5px; width:160px; height:160px;}
-.colorselector .mask1 {position:absolute; left:2px; top:2px; width:156px; height:156px; border:solid 3px #c0c0c0;}
+.colorselector .mask1 {position:absolute; left:2px; top:2px; width:150px; height:150px; border:solid 3px #c0c0c0;}
 .colorselector .mask2{position:absolute; background: url(images/jsf.ui.ColorSelector.png); width:150px; height:150px}
-.colorselector .mask3{position:absolute; border:solid 3px #c0c0c0; left:171px; top:7px; width:16px; height:156px;}
+.colorselector .mask3{position:absolute; border:solid 3px #c0c0c0; left:171px; top:7px; width:10px; height:150px;}
 .colorselector .mask4{position:absolute; left:174px; top:10px; width:10px; height:150px; background:url(images/jsf.ui.ColorSelector.png) -150px 0 no-repeat;}
 .colorselector .indicator1{position:absolute; width:10px; height:10px; border-radius:50%; border: solid 1px #fff;}
 .colorselector .indicator1 div{position:absolute; width:8px; height:8px; border-radius:50%; border: solid 1px #000;}

@@ -137,39 +137,60 @@
             
         },
         _property:{
-            
+            color: {
+                type:"String",
+                get:function(){
+                    return this._color;
+                },
+                set:function(value){
+                    var 
+                        rgb = hexToRgb(value, {r: 255, g: 255, b: 255}),
+                        hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+
+                    //define a cor da máscara
+
+                    //posição y do seletor vertical
+                    this._y = hsv.h*150;
+
+                    //posição x e y do círculo
+                    this._xx = hsv.v*150;
+                    this._yy = (1-hsv.s)*150;
+
+                    this._color = value;
+                }
+            }
         },
         _public: {
-            render: function(){
+            render: function() {
                 var h, s, v, rgb, hsv;
-        
-        h   = this._y/150;
-        s   = 1-(this._yy/150);
-        v   = (this._xx/150);
-        
-		//cor do fundo. (máscara)
-        rgb = hsvToRgb(h, 1, 1);
-		this._elMask2.style.backgroundColor = rgbToHex(rgb.r, rgb.g, rgb.b);
-        
-        //cor atual
-        rgb = hsvToRgb(h, s, v);
-		this._color = rgbToHex(rgb.r, rgb.g, rgb.b);
-		this._elPreview.style.backgroundColor = this._color;
-        
-		//valores das caixas de texto
+
+                h = this._y / 150;
+                s = 1 - (this._yy / 150);
+                v = (this._xx / 150);
+
+                //cor do fundo. (máscara)
+                rgb = hsvToRgb(h, 1, 1);
+                this._elMask2.style.backgroundColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+
+                //cor atual
+                rgb = hsvToRgb(h, s, v);
+                this._color = rgbToHex(rgb.r, rgb.g, rgb.b);
+                this._elPreview.style.backgroundColor = this._color;
+
+                //valores das caixas de texto
                 this._no_change = true;
-		this._R.value = Math.round(rgb.r * 255);
-		this._G.value = Math.round(rgb.g * 255);
-		this._B.value = Math.round(rgb.b * 255);
-		this._H.value = this._color;
-		this._no_change = false;
-        
-		//posição do indicador vertical e do círculo
-		this._elIndic.style.top = (this._y+6) + 'px';
-		this._elMask1.childNodes[1].style.left= this._xx + 'px';
-		this._elMask1.childNodes[1].style.top = this._yy + 'px';
-		
-		return this;
+                this._R.value = Math.round(rgb.r * 255);
+                this._G.value = Math.round(rgb.g * 255);
+                this._B.value = Math.round(rgb.b * 255);
+                this._H.value = this._color;
+                this._no_change = false;
+
+                //posição do indicador vertical e do círculo
+                this._elIndic.style.top = (this._y + 6) + 'px';
+                this._elMask1.childNodes[1].style.left = this._xx + 'px';
+                this._elMask1.childNodes[1].style.top = this._yy + 'px';
+
+                return this;
             }
         },
         _static: {

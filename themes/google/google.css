@@ -2,10 +2,11 @@ body {overflow: hidden;}
 input {-moz-user-select: text;}
 input:focus,textarea:focus {outline: none;}
 body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
+div{box-sizing: border-box;}
 
 .shadow{box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
 
-.display {display:block; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; user-select:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:-moz-none; -o-user-select:none; overflow:hidden; cursor:default; padding:0; margin:0; outline:none; border-color:#e5e5e5; border-width:1px; background:#f5f5f5; color:#666;}
+.display {display:block; user-select:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:-moz-none; -o-user-select:none; overflow:hidden; cursor:default; padding:0; margin:0; outline:none; border-color:#e5e5e5; border-width:1px; background:#f5f5f5; color:#666;}
 
 .container{background:#fff;}
 
@@ -119,9 +120,9 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 
 .optionbox {display:table-row; background:transparent;}
 .optionbox .client{position:relative;}
-.optionbox .icon {position:absolute; overflow:visible; top:1px; height:13px; width:13px; border:solid 1px #c6c6c6; border-radius:50%;}
-.optionbox .caption {display:table-cell; padding-left:22px;}
-.optionbox.checked .icon div {position:absolute; top:3px; left:3px; width:7px; height:7px; background:rgb(111, 111, 111); border-radius:50%;}
+.optionbox .icon {position:absolute; overflow:visible; top:1px; height:11px; width:11px; border:solid 1px #c6c6c6; border-radius:50%;}
+.optionbox .caption {display:table-cell; padding-left:16px;}
+.optionbox.checked .icon div {position:absolute; top:2px; left:2px; width:7px; height:7px; background:rgb(111, 111, 111); border-radius:50%;}
 .optionbox.mouseover {color:#000;}
 .optionbox.mouseover .icon {box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);}
 .optionbox.focus .icon{border-color:#4D90FE;}
@@ -142,8 +143,9 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .calendar .week   {height:18px; width:100%; position:relative; padding-left:18px; background:#fff; border-bottom: solid 1px #E9E9E9;}
 .calendar .days   {background:#fff; height:126px; padding-top:1px;}
 .calendar .footer {height:19px; border-top:solid 1px #e5e5e5; width:100%;  text-align:center; line-height:19px;}
-.calendar .lbutton{position:absolute; top:5px; left:3px; height:16px; width:16px; background:url(images/icons16.gif) 0 -80px;}
-.calendar .rbutton{position:absolute; top:5px; right:2px;height:16px; width:16px; background:url(images/icons16.gif) 0 -48px;}
+.calendar .footer .now:hover{cursor:pointer; text-decoration:underline}
+.calendar .lbutton{position:absolute; padding:0; top:5px; left:3px; height:16px; width:16px; background:url(images/icons16.gif) 0 -80px;}
+.calendar .rbutton{position:absolute; padding:0; top:5px; right:2px;height:16px; width:16px; background:url(images/icons16.gif) 0 -48px;}
 .calendar .month  {position:absolute; left:21px; height:26px; line-height:26px; text-align:center; width:177px;}
 .calendar .day{float:left; border:solid 1px transparent; width:20px; height:18px; line-height:18px; margin-right:5px; text-align:center;}
 .calendar .week .day{height:17px; line-height:17px; border-color:transparent; font-weight:bold}
@@ -153,3 +155,22 @@ body,input,textarea {font:normal 13px arial,sans-serif; color:rgb(78, 96, 114);}
 .calendar .row .deactive{color:#BDBDBD}
 .calendar .d0{color:#dd4b39}
 .calendar .d6{color:#4d90f0}
+
+.colorselector {width: 294px; height:170px; border-style:solid;}
+.colorselector .client{position:relative; width:100%; height:100%}
+.colorselector input{width:30px; position:absolute; left:15px; height:15px; font-family:monospace;}
+.colorselector .r{position:absolute; top:50px; left:200px; font-weight:bold; line-height:20px}
+.colorselector .g{position:absolute; top:74px; left:200px; font-weight:bold; line-height:20px}
+.colorselector .b{position:absolute; top:98px; left:200px; font-weight:bold; line-height:20px}
+.colorselector .code {top:143px; left:215px; width:70px;}
+.colorselector .preview{position:absolute; top:25px; left:215px; width:73px; height:21px; border:solid 1px #c0c0c0;}
+.colorselector .apply{position:absolute; top:4px; left:215px; text-decoration:underline; overflow:visible; color:#4d90f0; cursor:pointer;}
+.colorselector .transparent{position:absolute; top:124px; left:215px; text-decoration:underline; overflow:visible; color:#4d90f0; cursor:pointer;}
+.colorselector .mask0 {position:absolute; left:5px; top:5px; width:160px; height:160px;}
+.colorselector .mask1 {position:absolute; left:2px; top:2px; width:156px; height:156px; border:solid 3px #c0c0c0;}
+.colorselector .mask2{position:absolute; background: url(images/jsf.ui.ColorSelector.png); width:150px; height:150px}
+.colorselector .mask3{position:absolute; border:solid 3px #c0c0c0; left:171px; top:7px; width:16px; height:156px;}
+.colorselector .mask4{position:absolute; left:174px; top:10px; width:10px; height:150px; background:url(images/jsf.ui.ColorSelector.png) -150px 0 no-repeat;}
+.colorselector .indicator1{position:absolute; width:10px; height:10px; border-radius:50%; border: solid 1px #fff;}
+.colorselector .indicator1 div{position:absolute; width:8px; height:8px; border-radius:50%; border: solid 1px #000;}
+.colorselector .indicator2{position:absolute; left:168px; top:5px; height:9px; width:22px; background:url(images/icons32.gif) no-repeat;}

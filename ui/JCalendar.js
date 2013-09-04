@@ -15,14 +15,14 @@
 
             this._canvas.innerHTML = 
                 '<div class="head">' +
-                    '<div class="lbutton" _captureMouseEvent="L"></div>' +
+                    '<div class="button lbutton" _captureMouseEvent="lbutton"></div>' +
                     '<div class="month">MONTH/YEAR</div>' +
-                    '<div class="rbutton" _captureMouseEvent="R"></div>' +
+                    '<div class="button rbutton" _captureMouseEvent="rbutton"></div>' +
                 '</div>' +
                 '<div class="week"></div>' +
                 '<div class="days"></div>' +
                 '<div class="footer">' +
-                    '<div class="now" _captureMouseEvent="today">now</div>' +
+                    '<span class="now" _captureMouseEvent="today">now</span>' +
                 '</div>';
         
             this._ebtl = this._canvas.childNodes[0].childNodes[0];
@@ -47,9 +47,9 @@
                 var m = element.getAttribute('_captureMouseEvent'), d;
 
                 //click nos botões: próximo e anterior
-                if (m == 'L') {
+                if (m == 'lbutton') {
                     this.date(Date.monthPrevious(this._date));
-                } else if (m == 'R') {
+                } else if (m == 'rbutton') {
                     this.date(Date.monthNext(this._date));
                 }
 
@@ -81,25 +81,21 @@
             },
             mouseover: function(element) {
                 var m = element.getAttribute('_captureMouseEvent');
-                return;
-                if (!element.cls) {
-                    element.cls = element.className;
-                }
-
-                //botões > e <
-                if (m == 'L' || m == 'R') {
-                    element.className = element.cls + ' ui-bd ui-fc ' + element.cls + '-over';
+                
+                //botões < e >
+                if (m == 'lbutton' || m == 'rbutton') {
+                    element.className = m + ' button mouseover';
+                    element.cls = m + ' button';
                     this._elOverActive = element;
                 }
 
                 //dia
                 if (m == 'day') {
-                    jsf.Dom.addClass(element, ' ui-ov ' + (element._enabled ? 'cld-day-a-over' : 'cld-day-d-over'));
-                    this._elOverActive = element;
+                    //jsf.Dom.addClass(element, ' ui-ov ' + (element._enabled ? 'cld-day-a-over' : 'cld-day-d-over'));
+                    //this._elOverActive = element;
                 }
             },
             mouseout: function() {
-                return;
                 if (this._elOverActive) {
                     this._elOverActive.className = this._elOverActive.cls;
                     this._elOverActive = null;

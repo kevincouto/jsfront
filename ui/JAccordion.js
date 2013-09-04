@@ -1,148 +1,131 @@
 "use strict";
 
-(function(){
-    var cls = jsf.getContentRule(".jaccordion-class"),
-        cHead1  = (cls[0] || "h3") + " acc-c2",
-        cBorder1= (cls[1] || "b1") + " acc";
-    
-    define("jsf.ui.JAccordion",{
+(function() {
+
+    define("jsf.ui.JAccordion", {
         _require: ["jsf.ui.JContainer"],
-        
         _alias: "jsf.JAccordion",
-        
         _extend: "container",
-        
         _xtype: "accordion",
         
-        _constructor : function(properties){
+        _constructor: function(properties) {
             jsf.ui.JContainer.call(this);
-            
-            this._canvas.className = cBorder1;
-            this._canvas.innerHTML = '<div class="acc-cl"></div>';
-            this._client = this._canvas.firstChild;
-            
-            this._activeIndex = 0;
-            
+
+            this._activeSection = 0;
+
             this._applyProperties(properties);
         },
-        
         _event: {
-            click: function(el, evt){
-                if ( el.isTitle ){
-                    if ( this._activeIndex != el.itemIndex ){
-                        this._activeIndex = el.itemIndex;
-                        this.render(true);
+            resize: function(){
+                render(this);
+            },
+            click: function(element, evt) {
+                var i;
+                
+                if (element.getAttribute("class").indexOf("accordion_head")>=0) {
+                    i = element.parentNode.sectionIndex;
+                    if (this._activeSection != i) {
+                        this._activeSection = i;
+                        render(this, true);
                     }
                 }
             }
         },
-        
         _static: {
-        
+            
         },
-        
+        _property:{
+            activeSection: {
+                type:"Number",
+                get: function() {
+                    return this._activeSection;
+                },
+                set: function(value){
+                    this._activeSection = value;
+                    this.updateDisplay();
+                }
+            }
+        },
         _public: {
             /**
              * override jsf.ui.JContainer.add
              */
-            add: function (container){
-                var r, d;
-                
-                if ( !(container instanceof jsf.ui.JContainer) ){
+            add: function(container) {
+                var d;
+
+                if (!(container instanceof jsf.ui.JContainer)) {
                     jsf.exception("child not instance of jsf.ui.JContainer");
                     return container;
                 }
                 
-                //cria um elemento título para o container
-                d = this._client.appendChild( jsf.Dom.create("div", false, "acc-c1") );
-                d.innerHTML = '<div class="' + cHead1 + '">' + container._caption + '</div>';
-                d.container = container;
-                d.isTitle = true;
-                d._captureMouseEvent = true;
-                
-                container._acc_el_caption = d;
-                
                 jsf.ui.JContainer.prototype.add.call(this, container);
                 
+                //cria um elemento título para o container
+                d = this._client.appendChild(jsf.Dom.create("div", false, "accordion_section"));
+                d.innerHTML = '<div class="accordion_head" _captureMouseEvent="true"><div class="accordion_caption">' + container._caption + '</div></div>';
+                d.appendChild(container.canvas());
+                
+                container._section = d;
                 return container;
             },
-            
-            activeIndex: function(value){
-               //get
-               if (value === undefined){
-                   return this._activeIndex;
-               }
-               
-               //set
-               this._activeIndex = this.firePropertyChange('activeIndex', value);
-               return this;
-            },
-            
-            render: function(effect){
-                var i, h, c, ec, ht, ha, y=0;
-                
-                ht= this._client.offsetHeight; //altura total do componente
-                h = headHeight(this);          //altura dos captions
-                c = this.children();           //componentes(containers) filhos
-                
-                if ( c.length>0 ){                    
-                    //calcula a altura disponível para o item atual
-                    ha = ht - (c.length * h);
-                    
-                    for (i=0; i<c.length; i++){
-                        ec = c[i]._acc_el_caption;
-                        ec.itemIndex = i;
-                        
-                        //effect será true quando chamado pelo evento click do evento acima
-                        if (effect){
-                            //título
-                            jsf.Effect.cssTransition({
-                                target: ec,
-                                properties: {
-                                    top: {to:y+'px', duration:'0.3s', timing:'ease-in'}
-                                }
-                            });
-                            
-                            //conteúdo
-                            c[i]._canvas.style.cssText = "border:none;left:0;right:0;top:" + (ec.offsetTop + ec.offsetHeight) + "px;height:0px";
-                            jsf.Effect.cssTransition({
-                                target: c[i],
-                                properties: {
-                                    top: {to:(y+h)+'px', duration:'0.3s', timing:'ease-in'},
-                                    height: {to:(i == this._activeIndex ? ha : 0)+'px', duration:'0.3s', timing:'ease-in'}
-                                }
-                            });
-                        }else{
-                            //título
-                            ec.style.top = y + "px";
-                            
-                            //conteúdo
-                            c[i]._canvas.style.cssText = "border:none;left:0;right:0;top:" + (y+h) + "px;height:" + (i == this._activeIndex ? ha : 0) + "px";
-                        }                        
-                        
-                        if ( i == this._activeIndex ){
-                            y += (h+ha);
-                        }else{
-                            y += h;
-                        }
-                    }
-                    
-                    c[this._activeIndex].render();
-                }
-                
+            render: function() {
+                render(this);
                 return this;
             }
         }
     });
-    
+
+//private vars:
     var _headHeight;
-    
-    function headHeight(acc){
-        if ( !_headHeight ){
-            _headHeight = acc._client.firstChild ? acc._client.firstChild.offsetHeight : 0;
+
+//private functions:
+    function render(acc, effect){
+        var 
+            i, h, c, ht, ha;
+                
+        ht = acc._client.offsetHeight; //altura total
+        h  = headHeight(acc);          //altura da área de título da seção
+        c  = acc.children();           //seções
+
+        //calcula a altura da seção aberta
+        ha = ht - ((c.length-1)*h);
+
+        for (i=0; i<c.length; i++) {
+            c[i]._section.sectionIndex = i;
+            
+            if (effect){
+                if (i == acc._activeSection) {
+                    c[i]._section.style.height = ha+"px";
+                    c[i]._section.firstChild.className="accordion_head active";
+                    c[i].updateDisplay();
+                    c[i]._section.style.height = h+"px";
+                }else{
+                    c[i]._section.firstChild.className="accordion_head";
+                }
+
+                jsf.effect.Effect.cssTransition({
+                    target: c[i]._section,
+                    properties: {
+                        height: {to: (i == acc._activeSection ? ha : h) + 'px', timing:"ease-in-out"}
+                    }
+                });
+            }else{
+                if (i == acc._activeSection) {
+                    c[i]._section.style.height = ha+"px";
+                    c[i].updateDisplay();
+                }else{
+                    c[i]._section.style.height = h+"px";
+                }
+            }
         }
-        
-        return _headHeight;
     }
     
+    function headHeight(acc) {
+        if (!_headHeight && acc._client.firstChild) {
+            _headHeight = acc._client.firstChild.firstChild.offsetHeight;
+        }
+
+        return _headHeight;
+    }
+
 }());
